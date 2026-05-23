@@ -1,0 +1,432 @@
+---
+title: "Supplement for Interim Analysis and Multiple Testing Strategy in Group-sequential Designed Study"
+date: "`r Sys.Date()`"
+output:
+  bookdown::html_document2:
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+    number_sections: no
+    self_contained: yes
+    highlight: pygments
+    code_folding: hide
+    code_download: true
+  bookdown::word_document2:
+    toc: no
+    toc_depth: '3'
+    number_sections: no
+params:
+  results: NULL
+  config: NULL
+---
+
+```{r options, include=FALSE}
+# Time limit in plot
+Tmax_atPlot          <- 60
+# Number of rounding digits for sample sizes and events
+n_digits             <- 0 
+# Number of digits to report for p-value boundaries
+pval_digits          <- 5
+# Number of rounding digits for information fractions on percentage scale
+info_fraction_digits <- 1
+# Number of rounding digits for time
+time_digits          <- 1 
+# Number of rounding digits for hurdle
+hurdle_digits        <- 3
+# Number of rounding digits for probabilities on percentage scale (e.g., power)
+prob_digits          <- 1
+# Number of rounding digits for expected analysis index
+analysis_digits      <- 2
+# Number of rounding digits for graph weights
+weight_digits        <- 2
+# Font size for tables in points (e.g. 8 for Word output); NULL uses document default
+table_font_size      <- 8
+```
+
+```{r setup, include=FALSE}
+library(appendMCP)
+library(bookdown)
+library(dplyr)
+library(flextable)
+library(forcats)
+library(gMCPLite)
+library(kableExtra)
+library(knitr)
+library(magrittr)
+
+knitr::opts_chunk$set(
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.width  = 6.5,
+  fig.height = 4.5,
+  message    = FALSE,
+  warning    = FALSE,
+  echo       = FALSE
+)
+options(width = 58)
+
+# Get results and config from parameters
+results   <- params$results
+config    <- params$config
+
+# if config is not provided, load some default config file from the package repository
+if (is.null(config)) {
+  config  <- load_config(system.file("config_repository", "example_study.R", package = "appendMCP"))
+}
+# If results not provided, run analysis
+if (is.null(results) && !is.null(config)) {
+  results <- process_config(config)
+}
+```
+
+# Introduction
+
+The multiplicity strategy follows the graphical approach for group-sequential designs of Maurer and Bretz (2013), which provides strong control of the family-wise type I error rate.
+The procedure takes into account both sources of multiplicity: multiple hypothesis tests (e.g., across primary and secondary endpoints) and multiple analyses planned for the study (i.e., interim and final analyses).
+
+There are two key components that define this approach:
+
+* The testing algorithm for multiple hypotheses specified by a graphical testing procedure;
+* Repeated testing of (some) hypotheses using $\alpha$-spending methodology.
+
+In this study, the family-wise type I error rate over all (interim and final) analyses, is controlled to `r if(!is.null(config$alpha)) config$alpha*100 else 2.5`% (one-sided). 
+
+# Enrollment {.tabset}
+
+With a `r if(!is.null(config$enroll_rate)) round(config$enroll_rate |> 
+group_by(stratum) |> mutate(d=sum(duration)) |> pull(d) |> max(), time_digits) else "XX"`-month accrual period, 
+the total sample size planned for the study is `r if(!is.null(config$enroll_rate)) round(sum(config$enroll_rate$duration * config$enroll_rate$rate), n_digits) else "XXX"`.
+
+## Piece-wise Constant Enrollment Rates
+
+```{r enrollment_er_figure}
+plot(results$er_figure)
+```
+
+## Cumulative Enrollment
+
+```{r enrollment_er_cum_figure}
+plot(results$er_cum_figure)
+```
+
+# Hypotheses {.tabset}
+
+The multiplicity strategy will be applied to the `r length(unique(results$hypotheses$index))` hypotheses across `r paste(unique(results$hypotheses$endpoint), collapse = ", ")` endpoints.
+The following table summarizes the hypotheses, specifying $\alpha$-spending functions (for hypotheses to be tested group sequentially) together with assumed effect sizes and the planned maximum statistical information (sample size or number of events).
+
+```{r trialDesignSummary, include=TRUE, echo=FALSE, results='markup'}
+table1_hux(results$tables$table1, n_digits = n_digits, font_size = table_font_size)
+```
+
+The following plots summarise the assumed distributional information for all endpoints.
+
+## Binary Endpoints {.tabset}
+
+### Rates
+
+```{r bin_figure}
+if (!is.null(config$distribution_bin) && nrow(config$distribution_bin) > 0) {
+  plot(results$bin_figure)
+} else {
+  cat("No binary endpoints specified.")
+}
+```
+
+### Absolute Risk Differences
+
+```{r bin_rd_figure}
+if (!is.null(config$distribution_bin) && nrow(config$distribution_bin) > 0) {
+  plot(results$bin_rd_figure)
+} else {
+  cat("No binary endpoints specified.")
+}
+```
+
+## Time-to-Event Endpoints {.tabset}
+
+### Drop-out {.tabset}
+
+#### Drop-out Rates
+
+```{r tte_dropout_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_dropout_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Cumulative Drop-out Probabilities
+
+```{r tte_dropout_probability_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_dropout_probability_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+### Survival {.tabset}
+
+#### Hazard Rate
+
+```{r tte_hazard_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_hazard_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Cumulative Hazard
+
+```{r tte_cumhaz_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_cumhaz_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Survival Curves
+
+```{r tte_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Median Survival
+
+```{r tte_median_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_median_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Survival Quantiles
+
+```{r tte_quantiles_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_quantiles_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Enrollment Weighted Survival Curves
+
+```{r tte_weighted_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_weighted_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Piece-wise Hazard Ratios
+
+```{r tte_hr_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_hr_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Average Hazard Ratios
+
+```{r tte_ahr_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_ahr_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+# Graphical Testing Procedure {.tabset}
+
+Figure \@ref(fig:MTgraph) shows the graph where the hypotheses of interest are represented by the elliptical nodes.
+Each node has the hypothesis weight assigned to it (denoted by $w$).
+A particular value of $w$ sets the local significance level associated with that hypothesis (which is equal to `r if(!is.null(config$alpha)) config$alpha else 0.025` × $w$).
+The graphical approach allows local significance levels to be recycled (along arrows on the graph) when
+a given hypothesis is successful (i.e., the corresponding null hypothesis is rejected) at interim or final analyses.
+Each arrow specifies the fraction of $w$ (by the number attached to it) to be transferred from the source node 
+to the destination node.
+This "$\alpha$-propagation" results in a corresponding increase of the local significance level of the destination node.
+The graph defines the initial configuration of the local significance levels and the directed edges (arrows).
+Particularly, the initial weight assignment for `r if(!is.null(config$graph$w) && !is.null(results$tables$table1)) combine_words(results$tables$table1$Label[config$graph$w>0]) else "hypotheses"` is set to `r if(!is.null(config$graph$w)) combine_words(round(config$graph$w[config$graph$w>0], weight_digits)) else "equal weights"`, respectively.
+
+```{r MTgraph, fig.cap="Graph Depicting Multiple Hypothesis Testing Strategy.", echo=FALSE, fig.align="center",fig.height=4, fig.width=6}
+if (!is.null(results$graph_figure)) {
+  plot(results$graph_figure)
+} else {
+  cat("Graph visualization not available - graph structure not provided in configuration.")
+}
+```
+
+The testing algorithm codes a series of graph transformations which happens at each successful clearing of a hypothesis as described in Maurer and Bretz (2013). 
+During an execution of the procedure, different scenarios as for local significance levels emerge in an iterative manner.
+For each hypothesis, Table \@ref(tab:graphTable) gives all possible scenarios for the local significance levels in the first column, the corresponding weight in the second column, and listing of scenarios as for what hypothesis testing needs to be successful in the third column. 
+
+```{r graphTable, include=TRUE, echo=FALSE, results='markup'}
+table4_hux(results$tables$table4,
+           pval_digits = pval_digits,
+           font_size   = table_font_size)
+```
+
+# Interim Analyses {.tabset}
+
+## IAs by Hypothesis
+
+Table \@ref(tab:iaDetailsTableA) summarizes the planned interim analyses, by hypothesis.
+
+```{r iaDetailsTableA, include=TRUE, echo=FALSE, results='markup'}
+table2_hux(results$tables$table2,
+           n_digits             = n_digits,
+           time_digits          = time_digits,
+           info_fraction_digits = info_fraction_digits,
+           font_size            = table_font_size)
+```
+
+## IAs by Calendar Time
+
+Table \@ref(tab:iaDetailsTableB)  summarizes the planned interim analyses, by data cut-off.
+
+```{r iaDetailsTableB, include=TRUE, echo=FALSE, results='markup'}
+table3_hux(results$tables$table3, n_digits = n_digits, time_digits = time_digits,
+           info_fraction_digits = info_fraction_digits, font_size = table_font_size)
+```
+
+## Information Timeline
+
+Figure \@ref(fig:informationPlot) provides details as to the statistical information projected to be available (as a percentage relative to the maximum) over time from the trial start by hypothesis.
+The vertical lines on the figure mark expected times of the interim analyses.
+
+```{r informationPlot, fig.cap="Information Factor Over Time by Hypothesis.", echo=FALSE, fig.align="center", fig.height=6, fig.width=9}
+if (!is.null(results$information_figure)) {
+  plot(results$information_figure)
+} else {
+  cat("Information plot not available - required data not provided.")
+}
+```
+
+## Timeline: Overall
+
+Figure \@ref(fig:timelineType1Plot) shows a timeline of the planned analyses and the amount of information available for analyzed endpoints at each such analysis.
+
+```{r timelineType1Plot, fig.cap="Anticipated study timeline.", echo=FALSE, fig.align="center", fig.height=5, fig.width=9}
+plot(results$timeline_type1_figure)
+```
+
+## Timeline: Triggers
+
+Figure \@ref(fig:timelineType2Plot) shows a timeline of the planned analyses and their associated analysis triggers.
+
+```{r timelineType2Plot, fig.cap="Anticipated time of each analysis, with associated trigger.", fig.width=10, fig.height=4}
+plot(results$timeline_type2_figure)
+```
+
+## Spending Functions
+
+$\alpha$-spending functions profiled by local significance levels available for hypotheses describing all potential scenarios needed during an execution of the multiple testing procedure.
+
+```{r alphaSpendingPlot, eval=TRUE, fig.cap="Alpha-spending functions", echo=FALSE, fig.height=8, fig.width=10}
+if (!is.null(results$alpha_spend_figure)) {
+  plot(results$alpha_spend_figure)
+} else {
+  cat("Spending function plot not available - no hypothesis data provided.")
+}
+```
+
+# Operating Characteristics {.tabset}
+
+## Boundary Specifications
+
+Table \@ref(tab:grSeqTable) details the procedure regarding hypothesis testing at interim and final analyses. 
+If for a given hypothesis group-sequential testing is planned, the table provides the nominal p-value boundary derived from the given $\alpha$-spending function and the information fractions.
+This boundary will be compared to the observed p-values calculated for the test statistics at the corresponding analyses.
+The timing of analyses is expressed in terms of statistical information fractions, i.e., current analysis information relative to the total planned information for that hypothesis test.
+The table also reports local power at each analysis time, assuming the hypotheses' effect sizes from the input table above and the available local $\alpha$ level.
+
+```{r grSeqTable, include=TRUE, echo=FALSE, results='markup'}
+table5_hux(results$tables$table5,
+           info_fraction_digits = info_fraction_digits,
+           pval_digits          = pval_digits,
+           hurdle_digits        = hurdle_digits,
+           prob_digits          = prob_digits,
+           font_size            = table_font_size)
+```
+
+## Operating Characteristics for Each Analysis
+
+Table \@ref(tab:operatingCharByAnalysis) presents simulation-based operating characteristics by analysis, showing power for individual hypotheses and joint scenarios at each planned analysis.
+
+```{r operatingCharByAnalysis, include=TRUE, echo=FALSE, results='markup'}
+table6a_hux(results$tables$table6a, prob_digits = prob_digits, font_size = table_font_size)
+```
+
+## Operating Characteristics Over Analyses
+
+Table \@ref(tab:operatingCharAcrossAnalyses) presents simulation-based operating characteristics averaged across all analyses, showing expected analysis index and expected calendar time for rejection scenarios.
+
+```{r operatingCharAcrossAnalyses, include=TRUE, echo=FALSE, results='markup'}
+table6b_hux(results$tables$table6b, analysis_digits = analysis_digits,
+            time_digits = time_digits, font_size = table_font_size)
+```
+
+# Input Data {.tabset}
+
+## Enrollment
+
+```{r enrollment_input}
+kable(config$enroll_rate, 
+      caption = "Enrollment Rate Assumptions",
+      digits  = 2)
+```
+
+## Binary Endpoints
+
+```{r bin_input}
+if (!is.null(config$distribution_bin) && nrow(config$distribution_bin) > 0) {
+  kable(config$distribution_bin, 
+        caption = "Binary Endpoint Parameters",
+        digits  = 3)
+} else {
+  cat("No binary endpoints specified.")
+}
+```
+
+## Time-to-Event Endpoints
+
+```{r tte_input}
+if (nrow(config$distribution_tte) > 0) {
+  kable(config$distribution_tte, 
+        caption = "Time-to-Event Distribution Parameters",
+        digits  = 4)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+## Graph Structure
+
+**Initial Weights:** `r paste(round(config$graph$w, weight_digits), collapse = ", ")`
+
+```{r graph-matrix}
+kable(config$graph$g, 
+      caption = "Transition Matrix",
+      digits  = 3)
+```
+
+# References
+
+Maurer W, Bretz F. Multiple testing in group sequential trials using graphical approaches. Statistics in Biopharmaceutical Research. 2013;5(4):311-320.
+
+---
+
+*Report generated on `r Sys.time()`*

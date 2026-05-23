@@ -1,0 +1,255 @@
+---
+title: "Example Study Report - Group Sequential Design with Multiple Testing"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example Study Report - Group Sequential Design with Multiple Testing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r options, include=FALSE}
+# Time limit in plot
+Tmax_atPlot = 60
+# Number of rounding digits for sample sizes and events
+n_digits = 0
+# Number of digits to report for p-value boundaries
+pval_digits = 5
+# Number of rounding digits for information fractions
+info_fraction_digits = 2
+# Number of rounding digits for time
+time_digits = 1
+# Number of rounding digits for hurdle
+hurdle_digits = 3
+# Number of rounding digits for power
+power_digits = 3
+```
+
+```{r setup, include=FALSE}
+library(appendMCP)
+library(dplyr)
+library(knitr)
+
+knitr::opts_chunk$set(
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.width  = 6.5,
+  fig.height = 4.5,
+  message    = FALSE,
+  warning    = FALSE,
+  echo       = FALSE
+)
+options(width = 58)
+
+config  <- load_config_from_repository("example_study")
+results <- process_config(config)
+```
+
+## Introduction
+
+With a `r if(!is.null(config$enroll_rate)) config$enroll_rate |> group_by(stratum) |> mutate(d=sum(duration)) |> pull(d) |> max() else "XX"`-month accrual period, the total sample size planned for the study is `r if(!is.null(config$enroll_rate)) sum(config$enroll_rate$duration * config$enroll_rate$rate) else "XXX"`.
+
+## Multiplicity Adjustment
+
+The multiplicity strategy follows the graphical approach for group sequential designs of Maurer and Bretz (2013) which provides strong control of type 1 error. The procedure takes into account both sources of multiplicity: multiple hypothesis tests (e.g., across primary and secondary endpoints) and multiple analyses planned for the study (i.e., interim and final analyses).
+
+There are two key components that define this approach:
+
+- Testing algorithm for multiple hypotheses specified by the graphical representation
+- Repeated testing of some hypotheses using the alpha-spending function methodology
+
+The multiplicity strategy will be applied to the `r length(unique(results$hypotheses$index))` hypotheses across `r paste(unique(results$hypotheses$endpoint), collapse = ", ")` endpoints. The following table summarizes the hypotheses specifying alpha-spending functions (for hypotheses to be tested group sequentially) together with the effect sizes and planned maximum statistical information (sample size or number of events).
+
+**Table 1. Summary of Primary and Key Secondary Hypotheses**
+
+```{r table1, include=TRUE, echo=FALSE, results='markup'}
+results$tables$table1 |>
+  dplyr::mutate(across("Maximum events / sample size", ~ round(.x, n_digits))) |>
+  huxtable::as_hux() |>
+  huxtable::theme_article() |>
+  print()
+```
+
+The overall type I family-wise error rate for `r if(!is.null(config$graph$w)) length(config$graph$w) else "X"` hypotheses, over all (interim and final) analyses, is controlled to `r if(!is.null(config$alpha)) config$alpha*100 else 2.5`% (one-sided).
+
+Figure 1 shows the graph where the hypotheses of interest are represented by the elliptical nodes. Each node has the hypothesis weight assigned to it (denoted by $w$). A particular value of $w$ sets the local significance level associated with that hypothesis (which is equal to `r if(!is.null(config$alpha)) config$alpha else 0.025` × $w$). The graphical approach allows local significance levels to be recycled (along arrows on the graph) when a given hypothesis is successful (i.e., the corresponding null hypothesis is rejected) at interim or final analyses.
+
+**Figure 1. Graph Depicting Multiple Hypothesis Testing Strategy**
+
+```{r MTgraph, echo=FALSE, fig.align="center", fig.height=4, fig.width=6}
+plot(results$graph_figure)
+```
+
+## Interim Analyses {.tabset}
+
+### IA by Hypothesis
+
+**Table 2. Summary of Interim Analyses (by hypotheses)**
+
+```{r iaDetailsTableA, include=TRUE, echo=FALSE, results='markup'}
+results$tables$table2 |>
+  dplyr::mutate(across("Events / sample size", ~ round(.x, n_digits))) |>
+  dplyr::mutate(across("Information fraction", ~ round(.x, info_fraction_digits))) |>
+  dplyr::mutate(across("Expected analysis time", ~ round(.x, time_digits))) |>
+  huxtable::as_hux() |>
+  huxtable::theme_article() |>
+  print()
+```
+
+### IA by Calendar Time
+
+**Table 3. Summary of Interim Analyses (by calendar analysis)**
+
+```{r iaDetailsTableB, include=TRUE, echo=FALSE, results='markup'}
+results$tables$table3 |>
+  dplyr::mutate(across("Events / sample size", ~ round(.x, n_digits))) |>
+  dplyr::mutate(across("Information fraction", ~ round(.x, info_fraction_digits))) |>
+  dplyr::mutate(across("Expected analysis time", ~ round(.x, time_digits))) |>
+  huxtable::as_hux() |>
+  huxtable::theme_article() |>
+  print()
+```
+
+### Information Flow
+
+**Figure 2. Information Factor Over Time by Hypothesis**
+
+```{r informationPlot, echo=FALSE, fig.align="center", fig.height=6, fig.width=9}
+plot(results$information_figure)
+```
+
+### Timeline of Planned Analyses
+
+**Figure 3. Anticipated study timeline**
+
+```{r timelineType1Plot, echo=FALSE, fig.align="center", fig.height=3, fig.width=9}
+plot(results$timeline_type1_figure)
+```
+
+**Figure 3b. Anticipated time of each analysis, with associated trigger**
+
+```{r timelineType2Plot, echo=FALSE, fig.width=10, fig.height=4}
+plot(results$timeline_type2_figure)
+```
+
+## Hypothesis Testing {.tabset}
+
+### Scenarios
+
+**Table 4. Weight Allocation Scenarios**
+
+```{r graphTable, include=TRUE, echo=FALSE, results='markup'}
+results$tables$table4 |>
+  huxtable::as_hux() |>
+  huxtable::theme_article() |>
+  print()
+```
+
+### Boundary Specifications
+
+**Table 5. Boundary Specifications**
+
+Table 5 details the hypothesis testing at the interim and final analyses. For hypotheses tested group sequentially, the table provides the nominal p-value boundary derived from the alpha-spending function and the information fractions. The timing of analyses is expressed in terms of statistical information fractions. The table also reports local power at each analysis time.
+
+```{r grSeqTable, include=TRUE, echo=FALSE, results='markup'}
+results$tables$table5 |>
+  dplyr::mutate(across("Information fraction", ~ round(.x, info_fraction_digits))) |>
+  dplyr::mutate(across("Nominal p-value",      ~ round(.x, pval_digits))) |>
+  dplyr::mutate(across("Exit hurdle",          ~ round(.x, hurdle_digits))) |>
+  dplyr::mutate(across("Local power",          ~ round(.x, power_digits))) |>
+  huxtable::as_hux() |>
+  huxtable::theme_article() |>
+  print()
+```
+
+### Operating Characteristics by Analysis
+
+**Table 6a. Operating Characteristics at Each Analysis**
+
+```{r operatingCharByAnalysis, include=TRUE, echo=FALSE, results='markup'}
+if (!is.null(results$tables$table6a)) {
+  results$tables$table6a |>
+    dplyr::mutate(across("Value", ~ round(.x, power_digits))) |>
+    huxtable::as_hux() |>
+    huxtable::theme_article() |>
+    print()
+} else {
+  cat("Simulation results not available.")
+}
+```
+
+### Operating Characteristics Overall
+
+**Table 6b. Operating Characteristics Across Analyses**
+
+```{r operatingCharAcrossAnalyses, include=TRUE, echo=FALSE, results='markup'}
+if (!is.null(results$tables$table6b)) {
+  results$tables$table6b |>
+    dplyr::mutate(across("Value", ~ round(.x, 2))) |>
+    huxtable::as_hux() |>
+    huxtable::theme_article() |>
+    print()
+} else {
+  cat("Simulation results not available.")
+}
+```
+
+### Spending Functions
+
+**Figure 4. Alpha-spending functions**
+
+```{r alphaSpendingPlot, eval=TRUE, echo=FALSE, fig.height=8, fig.width=10}
+plot(results$alpha_spend_figure)
+```
+
+## Configuration Details
+
+### Graph Structure
+
+**Table 7. Transition Matrix**
+
+```{r graph-matrix}
+kable(config$graph$g, digits = 3)
+```
+
+**Initial Weights:** `r paste(config$graph$w, collapse = ", ")`
+
+### Enrollment Assumptions
+
+**Table 8. Enrollment Rate Assumptions**
+
+```{r enrollment_input}
+kable(config$enroll_rate, digits = 2)
+```
+
+### Binary Endpoint Assumptions
+
+**Table 9. Binary Endpoint Parameters**
+
+```{r bin_input}
+if (!is.null(config$distribution_bin) && nrow(config$distribution_bin) > 0) {
+  kable(config$distribution_bin, digits = 3)
+} else {
+  cat("No binary endpoints specified.")
+}
+```
+
+### Time-to-Event Endpoint Assumptions
+
+**Table 10. Time-to-Event Distribution Parameters**
+
+```{r tte_input}
+if (!is.null(config$distribution_tte) && nrow(config$distribution_tte) > 0) {
+  kable(config$distribution_tte, digits = 4)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+## References
+
+Maurer W, Bretz F. Multiple testing in group sequential trials using graphical approaches. *Statistics in Biopharmaceutical Research.* 2013;5(4):311-320.
+
+---
+
+*Report generated on `r Sys.time()`*

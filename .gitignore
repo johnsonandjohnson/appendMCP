@@ -1,0 +1,38 @@
+.DS_Store
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+/Meta/
+docs
+..Rcheck/
+# Vignette preview files
+*.html
+!inst/doc/*.html
+*.pdf
+*.docx
+vignettes/*.html
+vignettes/*.pdf
+vignettes/*.docx
+vignettes/*_cache/
+vignettes/*_files/
+# Compiled object files
+*.o
+*.so
+src/*.o
+src/*.so
+my_study/
+src/symbols.rds
+/doc/
+# RStudio Connect deployment files
+rsconnect/
+private/
+dev/
+lintr-reports/
+.amazonq/
+qc/
+.kiro/
+# Rendered HTML outputs in dev/
+dev/**/*.html
+dev/*.html

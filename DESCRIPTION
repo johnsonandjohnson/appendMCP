@@ -1,0 +1,52 @@
+Package: appendMCP
+Type: Package
+Title: Tools for Defining Graphical Multiple Testing Procedures in Group Sequentially Designed Trials
+Version: 0.3.0
+Authors@R: c(
+    person("Yevgen", "Tymofyeyev", email = "ytymofye@its.jnj.com", role = c("aut", "cre")),
+    person("Michael", "Grayling", email = "mgraylin@its.jnj.com", role = c("aut"))
+  )
+Author: Yevgen Tymofyeyev [aut, cre], Michael Grayling [aut]
+Maintainer: Yevgen Tymofyeyev <ytymofye@its.jnj.com>
+Description:
+    Provides routines for describing graphical multiple comparison
+    procedures (MCPs) in trials with a group-sequential design (GSD). The
+    objective is to generate an R Markdown file that defines the MTP and interim
+    analyses, which can be appended to a statistical analysis plan document.
+    The package provides predefined templates that can be modified by a user, 
+    ideally by changing only high-level input parameters.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 8.0.0
+Imports: 
+    data.table,
+    dplyr,
+    ggplot2,
+    ggrepel,
+    glue,
+    gMCPLite,
+    gsDesign,
+    gsDesign2,
+    huxtable,
+    magrittr,
+    mvtnorm,
+    purrr,
+    Rcpp,
+    rlang,
+    rpact,
+    stats,
+    tibble,
+    tidyr,
+    tidyselect
+Suggests: 
+    bookdown,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    utils
+Depends: 
+    R (>= 4.1.0)
+LinkingTo: Rcpp
+Config/testthat/edition: 3
+VignetteBuilder: knitr
