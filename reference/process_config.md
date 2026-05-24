@@ -1,0 +1,127 @@
+# Process configuration into complete GSD analysis
+
+Transforms raw study configuration into comprehensive group sequential
+design analysis with graphical multiple testing procedures. Orchestrates
+sequential processing steps to generate analysis schedules, hypothesis
+testing boundaries, operating characteristics, and comprehensive
+reporting outputs.
+
+## Usage
+
+``` r
+process_config(config)
+```
+
+## Arguments
+
+- config:
+
+  Study configuration list with 7 required components:
+
+  \*\*Study Metadata:\*\* - \`study_name\`: Character string identifying
+  the study - \`study_description\`: Brief description of study design -
+  \`alpha\`: Overall Type I error rate (typically 0.025 for one-sided)
+
+  \*\*analyses:\*\* Data frame defining analysis schedule. Each row
+  specifies one planned analysis with trigger conditions: -
+  \`endpoint\`: Endpoint triggering the analysis (e.g., "OS", "CR") -
+  \`strata\`: List of patient strata contributing to trigger -
+  \`treatments\`: List of treatment arms contributing to trigger -
+  \`sample_size\`: Target sample size for binary endpoints (NA for
+  TTE) - \`events\`: Target events for time-to-event endpoints (NA for
+  binary) - \`power_subsets_any\`: Named list of hypothesis subsets for
+  "at least one rejection" power - \`power_subsets_all\`: Named list of
+  hypothesis subsets for "all rejections" power
+
+  \*\*hypotheses:\*\* Data frame defining statistical hypotheses. Each
+  row specifies one hypothesis: - \`type\`: "Primary" or "Secondary" -
+  \`endpoint\`: Endpoint being tested - \`strata\`: List of strata for
+  this hypothesis - \`control\`: Control treatment arm name - \`test\`:
+  Test treatment arm name - \`analyses_analysed\`: Vector of analysis
+  indices (from analyses data frame) testing this hypothesis - \`sf\`:
+  Spending function ("none", "asHSD", "asOF", "asP", "asKD", "asUser") -
+  \`sfpar\`: Spending function parameter (e.g., gamma for HSD; NULL if
+  not applicable) - \`nominal\`: Nominal alpha spending at interims
+  (optional; NULL for spending function) - \`test_method\`: Statistical
+  test ("logrank", "stratified_logrank", "unpooled_proportions",
+  "pooled_proportions", "cmh")
+
+  \*\*enroll_rate:\*\* Data frame specifying enrollment assumptions by
+  stratum: - \`stratum\`: Patient stratum identifier - \`treatments\`:
+  List of treatment arms for this stratum - \`rate\`: Enrollment rate
+  (patients per month) - \`duration\`: Enrollment duration (months) -
+  \`ratio\`: Randomization ratio vector (e.g., c(1,1) for 1:1)
+
+  \*\*distribution_tte:\*\* Data frame with time-to-event distribution
+  parameters: - \`endpoint\`: TTE endpoint name - \`stratum\`: Patient
+  stratum - \`treatment\`: Treatment arm - \`duration\`: Duration of
+  constant hazard period (Inf = constant throughout) - \`fail_rate\`:
+  Hazard rate (events per month) - \`dropout_rate\`: Dropout hazard rate
+  (per month)
+
+  \*\*distribution_bin:\*\* Data frame with binary endpoint
+  parameters: - \`endpoint\`: Binary endpoint name - \`stratum\`:
+  Patient stratum - \`treatment\`: Treatment arm - \`rate\`: Response
+  rate (probability of success) - \`maturity_time\`: Time (months) when
+  endpoint can be evaluated
+
+  \*\*graph:\*\* Graphical multiple testing procedure specification: -
+  \`g\`: Transition matrix (k×k for k hypotheses). Element g\[i,j\] =
+  fraction of alpha from hypothesis i transferred to j when i is
+  rejected. Diagonal = 0, row sums ≤ 1 - \`w\`: Initial weight vector
+  (length k). Element w\[i\] = initial alpha allocation to hypothesis i.
+  Sum must equal 1.0
+
+## Value
+
+List with 22 components: - \`analyses\`: Enriched analyses data frame
+(original + 11 computed columns including index, dist_type,
+hypotheses_analysed, time, description_trigger_short/long,
+hypotheses_information_fractions, hypotheses_information) -
+\`hypotheses\`: Enriched hypotheses data frame (original + 18+ computed
+columns, expanded by weight scenarios, including information_fractions,
+specs, power, hurdles, nominal_p, description_effect_size) - \`tables\`:
+List of 7 summary tables (table1-5: hypothesis/analysis summaries;
+table6a-b: operating characteristics by analysis and overall) -
+\`config\`: Original configuration with processed distribution and
+enroll_rate - \`graph_figure\`: ggplot object visualizing graphical
+testing procedure - \`information_figure\`: ggplot showing information
+availability over time - \`alpha_spend_figure\`: ggplot of alpha
+spending functions by hypothesis - \`timeline_type1_figure\`: ggplot of
+study timeline (hypothesis-centric view) - \`timeline_type2_figure\`:
+ggplot of study timeline (analysis-centric view) - \`bin_figure\`:
+ggplot of binary endpoint distributions - \`bin_rd_figure\`: ggplot of
+binary endpoint risk differences - \`tte_figure\`: ggplot of
+time-to-event survival curves - \`tte_ahr_figure\`: ggplot of average
+hazard ratio over time - \`tte_cumhaz_figure\`: ggplot of cumulative
+hazard functions - \`tte_dropout_figure\`: ggplot of dropout hazard
+rates - \`tte_dropout_probability_figure\`: ggplot of dropout
+probabilities over time - \`tte_hazard_figure\`: ggplot of hazard rate
+functions - \`tte_hr_figure\`: ggplot of hazard ratios over time -
+\`tte_median_figure\`: ggplot of median survival times -
+\`tte_quantiles_figure\`: ggplot of survival quantiles -
+\`tte_weighted_figure\`: ggplot of weighted survival curves -
+\`er_figure\`: ggplot of enrollment rates by stratum -
+\`er_cum_figure\`: ggplot of cumulative enrollment over time
+
+## See also
+
+\[load_config_from_repository()\] for loading built-in configurations,
+\[create_study()\] for creating new study setups, \[generate_report()\]
+for creating comprehensive reports
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# Load example configuration
+config <- load_config_from_repository("dualEP_study")
+
+# Process configuration
+results <- process_config(config)
+
+# Access outputs
+print(results$tables$table1)  # Hypothesis summary
+print(results$graph_figure)   # Graphical procedure
+} # }
+```
