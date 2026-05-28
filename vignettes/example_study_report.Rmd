@@ -1,7 +1,11 @@
 ---
 title: "Example Study Report - Group Sequential Design with Multiple Testing"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
 vignette: >
   %\VignetteIndexEntry{Example Study Report - Group Sequential Design with Multiple Testing}
   %\VignetteEngine{knitr::rmarkdown}
@@ -27,7 +31,6 @@ power_digits = 3
 
 ```{r setup, include=FALSE}
 library(appendMCP)
-library(dplyr)
 library(knitr)
 
 knitr::opts_chunk$set(
@@ -47,7 +50,21 @@ results <- process_config(config)
 
 ## Introduction
 
-With a `r if(!is.null(config$enroll_rate)) config$enroll_rate |> group_by(stratum) |> mutate(d=sum(duration)) |> pull(d) |> max() else "XX"`-month accrual period, the total sample size planned for the study is `r if(!is.null(config$enroll_rate)) sum(config$enroll_rate$duration * config$enroll_rate$rate) else "XXX"`.
+With a `r if(!is.null(config$enroll_rate)) max(tapply(config$enroll_rate$duration, config$enroll_rate$stratum, sum)) else "XX"`-month accrual period, the total sample size planned for the study is `r if(!is.null(config$enroll_rate)) sum(config$enroll_rate$duration * config$enroll_rate$rate) else "XXX"`.
+
+## Enrollment {.tabset}
+
+### Piece-wise Constant Enrollment Rates
+
+```{r enrollment_er_figure}
+plot(results$er_figure)
+```
+
+### Cumulative Enrollment
+
+```{r enrollment_er_cum_figure}
+plot(results$er_cum_figure)
+```
 
 ## Multiplicity Adjustment
 
@@ -63,14 +80,136 @@ The multiplicity strategy will be applied to the `r length(unique(results$hypoth
 **Table 1. Summary of Primary and Key Secondary Hypotheses**
 
 ```{r table1, include=TRUE, echo=FALSE, results='markup'}
-results$tables$table1 |>
-  dplyr::mutate(across("Maximum events / sample size", ~ round(.x, n_digits))) |>
-  huxtable::as_hux() |>
-  huxtable::theme_article() |>
-  print()
+table1_hux(results$tables$table1, n_digits = n_digits)
 ```
 
 The overall type I family-wise error rate for `r if(!is.null(config$graph$w)) length(config$graph$w) else "X"` hypotheses, over all (interim and final) analyses, is controlled to `r if(!is.null(config$alpha)) config$alpha*100 else 2.5`% (one-sided).
+
+## Distribution Assumptions {.tabset}
+
+### Binary Endpoints {.tabset}
+
+#### Rates
+
+```{r bin_figure}
+if (!is.null(config$distribution_bin) && nrow(config$distribution_bin) > 0) {
+  plot(results$bin_figure)
+} else {
+  cat("No binary endpoints specified.")
+}
+```
+
+#### Absolute Risk Differences
+
+```{r bin_rd_figure}
+if (!is.null(config$distribution_bin) && nrow(config$distribution_bin) > 0) {
+  plot(results$bin_rd_figure)
+} else {
+  cat("No binary endpoints specified.")
+}
+```
+
+### Time-to-Event Endpoints {.tabset}
+
+#### Drop-out Rates
+
+```{r tte_dropout_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_dropout_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Cumulative Drop-out Probabilities
+
+```{r tte_dropout_probability_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_dropout_probability_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Hazard Rate
+
+```{r tte_hazard_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_hazard_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Cumulative Hazard
+
+```{r tte_cumhaz_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_cumhaz_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Survival Curves
+
+```{r tte_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Median Survival
+
+```{r tte_median_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_median_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Survival Quantiles
+
+```{r tte_quantiles_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_quantiles_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Enrollment Weighted Survival Curves
+
+```{r tte_weighted_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_weighted_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Piece-wise Hazard Ratios
+
+```{r tte_hr_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_hr_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
+
+#### Average Hazard Ratios
+
+```{r tte_ahr_figure}
+if (nrow(config$distribution_tte) > 0) {
+  plot(results$tte_ahr_figure)
+} else {
+  cat("No time-to-event endpoints specified.")
+}
+```
 
 Figure 1 shows the graph where the hypotheses of interest are represented by the elliptical nodes. Each node has the hypothesis weight assigned to it (denoted by $w$). A particular value of $w$ sets the local significance level associated with that hypothesis (which is equal to `r if(!is.null(config$alpha)) config$alpha else 0.025` × $w$). The graphical approach allows local significance levels to be recycled (along arrows on the graph) when a given hypothesis is successful (i.e., the corresponding null hypothesis is rejected) at interim or final analyses.
 
@@ -87,13 +226,8 @@ plot(results$graph_figure)
 **Table 2. Summary of Interim Analyses (by hypotheses)**
 
 ```{r iaDetailsTableA, include=TRUE, echo=FALSE, results='markup'}
-results$tables$table2 |>
-  dplyr::mutate(across("Events / sample size", ~ round(.x, n_digits))) |>
-  dplyr::mutate(across("Information fraction", ~ round(.x, info_fraction_digits))) |>
-  dplyr::mutate(across("Expected analysis time", ~ round(.x, time_digits))) |>
-  huxtable::as_hux() |>
-  huxtable::theme_article() |>
-  print()
+table2_hux(results$tables$table2, n_digits = n_digits,
+           time_digits = time_digits, info_fraction_digits = info_fraction_digits)
 ```
 
 ### IA by Calendar Time
@@ -101,13 +235,8 @@ results$tables$table2 |>
 **Table 3. Summary of Interim Analyses (by calendar analysis)**
 
 ```{r iaDetailsTableB, include=TRUE, echo=FALSE, results='markup'}
-results$tables$table3 |>
-  dplyr::mutate(across("Events / sample size", ~ round(.x, n_digits))) |>
-  dplyr::mutate(across("Information fraction", ~ round(.x, info_fraction_digits))) |>
-  dplyr::mutate(across("Expected analysis time", ~ round(.x, time_digits))) |>
-  huxtable::as_hux() |>
-  huxtable::theme_article() |>
-  print()
+table3_hux(results$tables$table3, n_digits = n_digits,
+           time_digits = time_digits, info_fraction_digits = info_fraction_digits)
 ```
 
 ### Information Flow
@@ -139,10 +268,7 @@ plot(results$timeline_type2_figure)
 **Table 4. Weight Allocation Scenarios**
 
 ```{r graphTable, include=TRUE, echo=FALSE, results='markup'}
-results$tables$table4 |>
-  huxtable::as_hux() |>
-  huxtable::theme_article() |>
-  print()
+table4_hux(results$tables$table4, pval_digits = pval_digits)
 ```
 
 ### Boundary Specifications
@@ -152,14 +278,9 @@ results$tables$table4 |>
 Table 5 details the hypothesis testing at the interim and final analyses. For hypotheses tested group sequentially, the table provides the nominal p-value boundary derived from the alpha-spending function and the information fractions. The timing of analyses is expressed in terms of statistical information fractions. The table also reports local power at each analysis time.
 
 ```{r grSeqTable, include=TRUE, echo=FALSE, results='markup'}
-results$tables$table5 |>
-  dplyr::mutate(across("Information fraction", ~ round(.x, info_fraction_digits))) |>
-  dplyr::mutate(across("Nominal p-value",      ~ round(.x, pval_digits))) |>
-  dplyr::mutate(across("Exit hurdle",          ~ round(.x, hurdle_digits))) |>
-  dplyr::mutate(across("Local power",          ~ round(.x, power_digits))) |>
-  huxtable::as_hux() |>
-  huxtable::theme_article() |>
-  print()
+table5_hux(results$tables$table5, info_fraction_digits = info_fraction_digits,
+           pval_digits = pval_digits, hurdle_digits = hurdle_digits,
+           prob_digits = power_digits)
 ```
 
 ### Operating Characteristics by Analysis
@@ -168,11 +289,7 @@ results$tables$table5 |>
 
 ```{r operatingCharByAnalysis, include=TRUE, echo=FALSE, results='markup'}
 if (!is.null(results$tables$table6a)) {
-  results$tables$table6a |>
-    dplyr::mutate(across("Value", ~ round(.x, power_digits))) |>
-    huxtable::as_hux() |>
-    huxtable::theme_article() |>
-    print()
+  table6a_hux(results$tables$table6a, prob_digits = power_digits)
 } else {
   cat("Simulation results not available.")
 }
@@ -184,11 +301,7 @@ if (!is.null(results$tables$table6a)) {
 
 ```{r operatingCharAcrossAnalyses, include=TRUE, echo=FALSE, results='markup'}
 if (!is.null(results$tables$table6b)) {
-  results$tables$table6b |>
-    dplyr::mutate(across("Value", ~ round(.x, 2))) |>
-    huxtable::as_hux() |>
-    huxtable::theme_article() |>
-    print()
+  table6b_hux(results$tables$table6b)
 } else {
   cat("Simulation results not available.")
 }

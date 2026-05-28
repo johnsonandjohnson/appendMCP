@@ -47,10 +47,6 @@ table_font_size      <- 8
 library(appendMCP)
 library(bookdown)
 library(dplyr)
-library(flextable)
-library(forcats)
-library(gMCPLite)
-library(kableExtra)
 library(knitr)
 library(magrittr)
 
