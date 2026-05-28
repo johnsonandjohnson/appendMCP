@@ -1,0 +1,315 @@
+---
+title: "Platform Trial with Arm Added Midway"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Platform Trial with Arm Added Midway}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r options, include=FALSE}
+n_digits             <- 0
+pval_digits          <- 5
+info_fraction_digits <- 1
+time_digits          <- 1
+hurdle_digits        <- 3
+prob_digits          <- 1
+analysis_digits      <- 2
+weight_digits        <- 2
+```
+
+```{r setup, include=FALSE}
+library(appendMCP)
+library(knitr)
+
+knitr::opts_chunk$set(
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.width  = 6.5,
+  fig.height = 4.5,
+  message    = FALSE,
+  warning    = FALSE,
+  echo       = FALSE
+)
+options(width = 58)
+
+config  <- load_config_from_repository("platform_study")
+results <- process_config(config)
+```
+
+## Introduction
+
+This vignette demonstrates how `appendMCP` handles a **platform-type group sequential design** in which a new treatment arm is added midway through an ongoing trial.
+The design pattern illustrated here extends the standard two-arm group sequential framework described in the `example_study_report` vignette to accommodate:
+
+- A **3-arm structure** (TrtA monotherapy, TrtAB combination, Control) where TrtAB is added after the trial has already started enrolling TrtA vs Control;
+- A **biomarker stratification** (B+ / B−) that is a genuine patient subgroup of clinical interest;
+- **Two control-arm pooling strategies** — pooled and concurrent — for the TrtAB vs Control comparison;
+- A **large graphical multiple testing procedure** spanning 12 hypotheses across 5 endpoints.
+
+The study has a total one-sided family-wise type I error rate of `r config$alpha * 100`% distributed across `r sum(config$graph$w > 0)` primary hypotheses, each receiving an initial weight of `r unique(config$graph$w[config$graph$w > 0])`.
+The inflated `alpha = 0.025 × 5` is an accounting device: it allows `process_config()` to compute power for all 12 hypotheses (including secondary endpoints with no formal alpha allocation), while each primary hypothesis still operates at a local significance level of 0.025.
+
+## Study Design
+
+### Two-Part Enrollment
+
+The trial enrolls in two parts:
+
+- **Part 1** — TrtA vs Control (2:1 ratio), B+/B− stratified, over approximately 14 months.
+- **Part 2** — TrtAB arm opens. All three arms enroll (TrtA : Control : TrtAB = 1:1:4 ratio). B+/B− stratification continues.
+
+The total accrual period is `r max(tapply(config$enroll_rate$duration, config$enroll_rate$stratum, sum))` months.
+
+### The Four-Stratum Structure
+
+`appendMCP` uses a **stratum** field to define subpopulations for enrollment and event modeling.
+This study uses 4 strata that encode two independent dimensions simultaneously:
+
+| Stratum | Enrollment stage | Biomarker |
+|---|---|---|
+| `S1_Bpos` | Part 1 (before TrtAB opens) | B+ |
+| `S1_Bneg` | Part 1 (before TrtAB opens) | B− |
+| `S2_Bpos` | Part 2 (after TrtAB opens)  | B+ |
+| `S2_Bneg` | Part 2 (after TrtAB opens)  | B− |
+
+The S1/S2 dimension is **artificial** — it is introduced purely to track which patients were enrolled before vs after the TrtAB arm opened.
+This is necessary because the two groups of control arm patients may not be exchangeable (a perceived stage effect), which motivates the concurrent control analysis.
+The B+/B− dimension is a **real** stratification factor that defines a subgroup of primary clinical interest (H12).
+
+### Encoding "Arm Added Midway" via Zero Enrollment Rates
+
+The platform design is encoded in the `enroll_rate` table using **zero-rate placeholder rows**.
+S2 strata have rate = 0 during Part 1 (months 0–14), signaling that no S2 patients exist yet.
+S1 strata have no rows after Part 1, so their enrollment stops when Part 1 ends.
+
+```{r enroll-table, echo=FALSE}
+kable(config$enroll_rate[, c("stratum", "treatments", "rate", "duration", "ratio")],
+      caption = "Enrollment rate specification. S2 rows with rate = 0 are required placeholders during Part 1.",
+      digits = 1)
+```
+
+The enrollment curves below show the resulting piecewise accrual by arm and stage.
+
+## Enrollment {.tabset}
+
+### Piece-wise Constant Enrollment Rates
+
+```{r er_figure}
+plot(results$er_figure)
+```
+
+### Cumulative Enrollment
+
+```{r er_cum_figure}
+plot(results$er_cum_figure)
+```
+
+## Multiplicity Adjustment
+
+The multiplicity strategy follows the graphical approach of Maurer and Bretz (2013), controlling the family-wise type I error rate across both multiple hypotheses and multiple analyses.
+
+The `r length(unique(results$hypotheses$index))` hypotheses span `r paste(unique(results$hypotheses$endpoint), collapse = ", ")` endpoints.
+The following table summarizes the hypotheses with their alpha-spending functions and maximum statistical information.
+
+**Table 1. Summary of Hypotheses**
+
+```{r table1, results='markup'}
+table1_hux(results$tables$table1, n_digits = n_digits)
+```
+
+### Pooled vs Concurrent Control
+
+For the TrtAB vs Control comparison, two separate sets of hypotheses are pre-specified:
+
+- **Pooled** (H3–H7): Control arm patients from both Part 1 and Part 2 are combined. This maximizes power but assumes no stage effect on the control arm.
+- **Concurrent** (H8–H9): Only control arm patients enrolled concurrently with TrtAB (Part 2, S2 strata) are used. This is conservative but robust to a potential stage effect.
+
+Both strategies are included in the graphical testing procedure, with alpha propagating between them upon rejection.
+
+### Alpha Distribution
+
+The overall family-wise type I error rate is controlled at 2.5% (one-sided) per primary hypothesis.
+The `alpha = 0.025 × 5` setting in the config is an accounting device: with 5 primary hypotheses each receiving initial weight `r unique(config$graph$w[config$graph$w > 0])`, each operates at a local significance level of `r unique(config$graph$w[config$graph$w > 0])` × `r config$alpha` = 0.025.
+Secondary hypotheses (H2, H4, H5) have initial weight 0 and receive alpha only through propagation upon rejection of primary hypotheses.
+
+**Figure 1. Graphical Multiple Testing Procedure**
+
+```{r MTgraph, fig.align="center", fig.height=5, fig.width=6}
+plot(results$graph_figure)
+```
+
+## Interim Analyses {.tabset}
+
+Three event-driven analyses are planned:
+
+1. **IA1** — `r config$analyses$events[1]` OS events in S1 strata (TrtA vs Control)
+2. **IA2** — `r config$analyses$events[2]` OS events in S1 strata (TrtA vs Control, final for Part 1) and first look at TrtAB vs Control
+3. **FA** — `r config$analyses$events[3]` OS events in S1+S2 strata (TrtAB vs Control, final)
+
+### IA by Hypothesis
+
+**Table 2. Summary of Interim Analyses (by hypothesis)**
+
+```{r iaDetailsTableA, results='markup'}
+table2_hux(results$tables$table2,
+           n_digits             = n_digits,
+           time_digits          = time_digits,
+           info_fraction_digits = info_fraction_digits)
+```
+
+### IA by Calendar Time
+
+**Table 3. Summary of Interim Analyses (by calendar analysis)**
+
+```{r iaDetailsTableB, results='markup'}
+table3_hux(results$tables$table3,
+           n_digits             = n_digits,
+           time_digits          = time_digits,
+           info_fraction_digits = info_fraction_digits)
+```
+
+### Information Timeline
+
+```{r informationPlot, fig.align="center", fig.height=6, fig.width=9}
+plot(results$information_figure)
+```
+
+### Timeline: Overall
+
+```{r timelineType1Plot, fig.align="center", fig.height=5, fig.width=9}
+plot(results$timeline_type1_figure)
+```
+
+### Timeline: Triggers
+
+```{r timelineType2Plot, fig.width=10, fig.height=4}
+plot(results$timeline_type2_figure)
+```
+
+### Spending Functions
+
+```{r alphaSpendingPlot, fig.height=8, fig.width=10}
+plot(results$alpha_spend_figure)
+```
+
+## Hypothesis Testing {.tabset}
+
+### Weight Scenarios
+
+**Table 4. Weight Allocation Scenarios**
+
+```{r graphTable, results='markup'}
+table4_hux(results$tables$table4, pval_digits = pval_digits)
+```
+
+### Boundary Specifications
+
+**Table 5. Boundary Specifications**
+
+```{r grSeqTable, results='markup'}
+table5_hux(results$tables$table5,
+           info_fraction_digits = info_fraction_digits,
+           pval_digits          = pval_digits,
+           hurdle_digits        = hurdle_digits,
+           prob_digits          = prob_digits)
+```
+
+## Operating Characteristics {.tabset}
+
+### By Analysis
+
+**Table 6a. Operating Characteristics at Each Analysis**
+
+```{r operatingCharByAnalysis, results='markup'}
+if (!is.null(results$tables$table6a)) {
+  table6a_hux(results$tables$table6a, prob_digits = prob_digits)
+} else {
+  cat("Simulation results not available.")
+}
+```
+
+### Across Analyses
+
+**Table 6b. Operating Characteristics Across Analyses**
+
+```{r operatingCharAcrossAnalyses, results='markup'}
+if (!is.null(results$tables$table6b)) {
+  table6b_hux(results$tables$table6b,
+              analysis_digits = analysis_digits,
+              time_digits     = time_digits)
+} else {
+  cat("Simulation results not available.")
+}
+```
+
+## Distribution Assumptions {.tabset}
+
+### Time-to-Event Endpoints {.tabset}
+
+#### Survival Curves
+
+```{r tte_figure}
+plot(results$tte_figure)
+```
+
+#### Hazard Rates
+
+```{r tte_hazard_figure}
+plot(results$tte_hazard_figure)
+```
+
+#### Hazard Ratios
+
+```{r tte_hr_figure}
+plot(results$tte_hr_figure)
+```
+
+#### Average Hazard Ratios
+
+```{r tte_ahr_figure}
+plot(results$tte_ahr_figure)
+```
+
+#### Median Survival
+
+```{r tte_median_figure}
+plot(results$tte_median_figure)
+```
+
+#### Drop-out Rates
+
+```{r tte_dropout_figure}
+plot(results$tte_dropout_figure)
+```
+
+## Input Data {.tabset}
+
+### Enrollment
+
+```{r enrollment_input}
+kable(config$enroll_rate, caption = "Enrollment Rate Assumptions", digits = 2)
+```
+
+### Time-to-Event Distributions
+
+```{r tte_input}
+kable(config$distribution_tte, caption = "Time-to-Event Distribution Parameters", digits = 4)
+```
+
+### Graph Structure
+
+**Initial weights:** `r paste(round(config$graph$w, weight_digits), collapse = ", ")`
+
+```{r graph-matrix}
+kable(config$graph$g, caption = "Transition Matrix", digits = 3)
+```
+
+## References
+
+Maurer W, Bretz F. Multiple testing in group sequential trials using graphical approaches. *Statistics in Biopharmaceutical Research.* 2013;5(4):311-320.
