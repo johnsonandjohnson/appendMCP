@@ -52,8 +52,8 @@ The design pattern illustrated here extends the standard two-arm group sequentia
 - **Two control-arm pooling strategies** — pooled and concurrent — for the TrtAB vs Control comparison;
 - A **large graphical multiple testing procedure** spanning 12 hypotheses across 5 endpoints.
 
-The study has a total one-sided family-wise type I error rate of `r config$alpha * 100`% distributed across `r sum(config$graph$w > 0)` primary hypotheses, each receiving an initial weight of `r unique(config$graph$w[config$graph$w > 0])`.
-The inflated `alpha = 0.025 × 5` is an accounting device: it allows `process_config()` to compute power for all 12 hypotheses (including secondary endpoints with no formal alpha allocation), while each primary hypothesis still operates at a local significance level of 0.025.
+Five families of hypotheses are evaluated in parallel within a single run. Hence, 5×α was used (with alpha initially distributed among the families). Each family allows alpha reallocation within its own set of hypotheses, but not across families.
+The total one-sided type I error rate of `r config$alpha * 100`% is distributed across `r sum(config$graph$w > 0)` families (each starting with its primary hypothesis) with an initial weight of `r unique(config$graph$w[config$graph$w > 0])`.
 
 ## Study Design
 
@@ -78,9 +78,7 @@ This study uses 4 strata that encode two independent dimensions simultaneously:
 | `S2_Bpos` | Part 2 (after TrtAB opens)  | B+ |
 | `S2_Bneg` | Part 2 (after TrtAB opens)  | B− |
 
-The S1/S2 dimension is **artificial** — it is introduced purely to track which patients were enrolled before vs after the TrtAB arm opened.
-This is necessary because the two groups of control arm patients may not be exchangeable (a perceived stage effect), which motivates the concurrent control analysis.
-The B+/B− dimension is a **real** stratification factor that defines a subgroup of primary clinical interest (H12).
+The S1/S2 dimension is introduced to track which patients were enrolled before vs after the TrtAB arm opened. The B+/B− dimension is a stratification factor that defines a subgroup of clinical interest (see H12).
 
 ### Encoding "Arm Added Midway" via Zero Enrollment Rates
 
@@ -115,6 +113,32 @@ plot(results$er_cum_figure)
 The multiplicity strategy follows the graphical approach of Maurer and Bretz (2013), controlling the family-wise type I error rate across both multiple hypotheses and multiple analyses.
 
 The `r length(unique(results$hypotheses$index))` hypotheses span `r paste(unique(results$hypotheses$endpoint), collapse = ", ")` endpoints.
+
+The following table provides a descriptive summary of each hypothesis for the reader's convenience. (This table is specific to this vignette; in a formal report, abbreviated information could be captured in the Label column of Table 1.)
+
+```{r hypothesis-description, echo=FALSE}
+hyp_desc <- data.frame(
+  Hypothesis = paste0("H", 1:12),
+  Endpoint   = c("OS", "PFS", "OS", "EFS", "PFS", "TSP", "TTE",
+                 "OS", "PFS", "OS", "PFS", "OS"),
+  Comparison = c("TrtA vs Control", "TrtA vs Control",
+                 "TrtAB vs Control", "TrtAB vs Control", "TrtAB vs Control",
+                 "TrtAB vs Control", "TrtAB vs Control",
+                 "TrtAB vs Control", "TrtAB vs Control",
+                 "TrtAB vs TrtA", "TrtAB vs TrtA",
+                 "TrtAB vs Control"),
+  Population = c("S1 (Part 1 only)", "S1 (Part 1 only)",
+                 "S1+S2 (pooled)", "S1+S2 (pooled)", "S1+S2 (pooled)",
+                 "S1+S2 (pooled)", "S1+S2 (pooled)",
+                 "S2 (concurrent)", "S2 (concurrent)",
+                 "S1+S2 (pooled)", "S1+S2 (pooled)",
+                 "B+ subgroup only"),
+  Family     = c(1, 1, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5),
+  stringsAsFactors = FALSE
+)
+kable(hyp_desc, caption = "Descriptive summary of hypotheses H1–H12.")
+```
+
 The following table summarizes the hypotheses with their alpha-spending functions and maximum statistical information.
 
 **Table 1. Summary of Hypotheses**
@@ -135,12 +159,11 @@ Both strategies are included in the graphical testing procedure, with alpha prop
 ### Alpha Distribution
 
 The overall family-wise type I error rate is controlled at 2.5% (one-sided) per primary hypothesis.
-The `alpha = 0.025 × 5` setting in the config is an accounting device: with 5 primary hypotheses each receiving initial weight `r unique(config$graph$w[config$graph$w > 0])`, each operates at a local significance level of `r unique(config$graph$w[config$graph$w > 0])` × `r config$alpha` = 0.025.
-Secondary hypotheses (H2, H4, H5) have initial weight 0 and receive alpha only through propagation upon rejection of primary hypotheses.
+The `alpha = 0.025 × 5` setting in the config reflects the five families evaluated in parallel. Each family receives initial weight `r unique(config$graph$w[config$graph$w > 0])`, giving it a significance level of 0.025. Alpha can be reallocated within a family upon rejection, but not across families.
 
 **Figure 1. Graphical Multiple Testing Procedure**
 
-```{r MTgraph, fig.align="center", fig.height=5, fig.width=6}
+```{r MTgraph, fig.align="center", fig.height=8, fig.width=6}
 plot(results$graph_figure)
 ```
 

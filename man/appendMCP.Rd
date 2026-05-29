@@ -4,46 +4,48 @@
 \name{appendMCP}
 \alias{appendMCP-package}
 \alias{appendMCP}
-\title{Tools for defining graphical multiple comparison procedures in group-sequentially designed trials}
+\title{Generate analysis documentation for graphical MCPs in group sequential trials}
 \description{
-{appendMCP} provides routines for describing graphical multiple comparison
-procedures (MCPs) in trials with a group-sequential design (GSD). Its primary
-objective is to generate comprehensive analysis reports and documentation
-that can be appended to statistical analysis plan (SAP) documents. The
-package includes predefined configuration templates and report templates
-that users can customize for their specific study designs.
+{appendMCP} generates analysis documentation for graphical multiple comparison
+procedures (MCPs) in group sequential design (GSD) clinical trials. Given a
+study configuration, it produces summary tables, diagnostic plots, and a fully
+formatted R Markdown report suitable for appending to a statistical analysis
+plan (SAP).
 }
 \section{Main Functions}{
 
 \describe{
-  \item{\code{\link{create_study}}}{Create a complete study configuration from available templates}
   \item{\code{\link{load_config_from_repository}}}{Load built-in configurations}
   \item{\code{\link{process_config}}}{Process design configurations and calculate operating characteristics}
-  \item{\code{\link{generate_report}}}{Generate comprehensive reports}
+  \item{\code{\link{generate_report}}}{Generate comprehensive HTML or Word reports}
+  \item{\code{\link{create_study}}}{Scaffold a new study from built-in templates}
 }
 }
 
 \section{Quick Start}{
 
-Create a new study using built-in templates:
 \preformatted{
-create_study(
-  config       = "dualEP_study",
-  rmd_template = "gsd_detailed",
-  output_dir   = "my_study"
-)
+library(appendMCP)
+
+config  <- load_config_from_repository("example_study")
+results <- process_config(config)
+generate_report(results)
+}
 }
 
-Or process configurations directly:
-\preformatted{
-config  <- load_config_from_repository("dualEP_study")
-results <- process_config(config)
-generate_report(
-  gsd_details   = results,
-  template_file = load_rmd_template_from_repository("gsd_detailed"),
-  template_type = "html"
-)
+\section{What the Package Produces}{
+
+\describe{
+  \item{Table 1}{Hypothesis summary (endpoint, type, spending function)}
+  \item{Table 2}{Analysis schedule by hypothesis (timing, information fractions)}
+  \item{Table 3}{Analysis schedule by analysis (all hypotheses at each look)}
+  \item{Table 4}{Weight scenarios under the graphical MCP}
+  \item{Table 5}{Boundary specifications (nominal p-values, information fractions, local power)}
+  \item{Table 6a / 6b}{Simulation-based operating characteristics by analysis and overall}
+  \item{Plots}{Graph diagram, information fractions, alpha spending, enrollment, time-to-event and binary endpoint distributions}
 }
+
+Tables are returned as \code{huxtable} objects ready for Word or HTML output.
 }
 
 \section{Configuration Structure}{
@@ -64,17 +66,24 @@ A valid configuration must include:
 list_config_repository()
 list_rmd_template_repository()
 
-# View a sample study config list from the repository
-load_config_from_repository("dualEP_study")
+# Load and process a study
+config  <- load_config_from_repository("example_study")
+results <- process_config(config)
 
-# View the corresponding .R file
-file.show(get_config_path("dualEP_study"))
+# Explore results
+results$tables$table1        # Hypothesis summary
+results$tables$table5        # Boundary specifications
+results$graph_figure         # Graphical MCP diagram
+results$alpha_spend_figure   # Alpha spending functions
 
-# Create sub-directory containing a report .Rmd file
+# Generate report
+generate_report(results)
+
+# Scaffold a new study
 create_study(
-  config       = "dualEP_study", # using config from repository
+  config       = "example_study",
   rmd_template = "gsd_detailed",
-  output_dir   = "my_custom_study"
+  output_dir   = "my_study"
 )
 }
 
