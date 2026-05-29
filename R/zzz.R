@@ -13,5 +13,5 @@
                         |_|     |_|
     ", "\n",
     rep("-", 105), "\n\n",
-    "v0.3.0: For an overview of the package's functionality enter: ?appendMCP")
+    "v", as.character(utils::packageVersion("appendMCP")), ": For an overview of the package's functionality enter: ?appendMCP")
 }
