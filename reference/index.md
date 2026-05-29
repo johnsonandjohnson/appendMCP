@@ -7,8 +7,8 @@
 - [`add_hypothesis_headers()`](add_hypothesis_headers.md) : Function to
   add hypothesis header rows (removes hypothesis column)
 - [`appendMCP-package`](appendMCP.md) [`appendMCP`](appendMCP.md) :
-  Tools for defining graphical multiple comparison procedures in
-  group-sequentially designed trials
+  Generate analysis documentation for graphical MCPs in group sequential
+  trials
 - [`apply_hypothesis_tests()`](apply_hypothesis_tests.md) : Apply
   hypothesis tests to analyses
 - [`calculate_analysis_timing_cpp_wrapper()`](calculate_analysis_timing_cpp_wrapper.md)

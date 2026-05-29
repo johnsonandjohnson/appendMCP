@@ -5,6 +5,15 @@
 With a 28-month accrual period, the total sample size planned for the
 study is 600.
 
+## Enrollment
+
+- Piece-wise Constant Enrollment Rates
+- Cumulative Enrollment
+
+![](example_study_report_files/figure-html/enrollment_er_figure-1.png)
+
+![](example_study_report_files/figure-html/enrollment_er_cum_figure-1.png)
+
 ## Multiplicity Adjustment
 
 The multiplicity strategy follows the graphical approach for group
@@ -29,33 +38,73 @@ statistical information (sample size or number of events).
 
 **Table 1. Summary of Primary and Key Secondary Hypotheses**
 
-    #>   ─────────────────────────────────────────────────────
-    #>     Label   Endpoint   Type        Initial   GSD       
-    #>                                     weight   spending  
-    #>                                              fn        
-    #>   ─────────────────────────────────────────────────────
-    #>     H1      CR         Primary         0.4   N/A       
-    #>     H2      OS         Primary         0.6   HSD(-1),  
-    #>                                              with a    
-    #>                                              nominal   
-    #>                                              spend of  
-    #>                                              0.001 at  
-    #>                                              IA1       
-    #>     H3      EFS        Secondar        0     HSD(-1),  
-    #>                        y                     with a    
-    #>                                              nominal   
-    #>                                              spend of  
-    #>                                              0.001 at  
-    #>                                              IA1       
-    #>   ─────────────────────────────────────────────────────
-    #> 
-    #> Column names: Label, Endpoint, Type, Initial weight, GSD
-    #> spending fn, Effect size, Maximum events / sample size
-    #> 
-    #> 5/7 columns shown.
+|  |  |  |  |  |  |  |
+|----|----|----|---:|----|---:|---:|
+| Label | Endpoint | Type | Initial weight | GSD spending fn | Effect size\* | Maximum events / sample size |
+| H1 | CR | Primary | 0.4 | N/A | Delta = 15% | 500 |
+| H2 | OS | Primary | 0.6 | HSD(-1), with a nominal spend of 0.001 at IA1 | HR = 0.69 | 334 |
+| H3 | EFS | Secondary | 0 | HSD(-1), with a nominal spend of 0.001 at IA1 | AHR = 0.68 | 413 |
+| \*For a hypothesis corresponding to a time-to-event variable subject to non-proportional hazards, the listed effect size is the average hazard ratio at the final analysis of this hypothesis. |  |  |  |  |  |  |
+
+Trial Design Summary {#tab:table1 .table .huxtable
+quarto-disable-processing="true"
+style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 The overall type I family-wise error rate for 3 hypotheses, over all
 (interim and final) analyses, is controlled to 2.5% (one-sided).
+
+## Distribution Assumptions
+
+- Binary Endpoints
+- Time-to-Event Endpoints
+
+#### Rates
+
+![](example_study_report_files/figure-html/bin_figure-1.png)
+
+#### Absolute Risk Differences
+
+![](example_study_report_files/figure-html/bin_rd_figure-1.png)
+
+#### Drop-out Rates
+
+![](example_study_report_files/figure-html/tte_dropout_figure-1.png)
+
+#### Cumulative Drop-out Probabilities
+
+![](example_study_report_files/figure-html/tte_dropout_probability_figure-1.png)
+
+#### Hazard Rate
+
+![](example_study_report_files/figure-html/tte_hazard_figure-1.png)
+
+#### Cumulative Hazard
+
+![](example_study_report_files/figure-html/tte_cumhaz_figure-1.png)
+
+#### Survival Curves
+
+![](example_study_report_files/figure-html/tte_figure-1.png)
+
+#### Median Survival
+
+![](example_study_report_files/figure-html/tte_median_figure-1.png)
+
+#### Survival Quantiles
+
+![](example_study_report_files/figure-html/tte_quantiles_figure-1.png)
+
+#### Enrollment Weighted Survival Curves
+
+![](example_study_report_files/figure-html/tte_weighted_figure-1.png)
+
+#### Piece-wise Hazard Ratios
+
+![](example_study_report_files/figure-html/tte_hr_figure-1.png)
+
+#### Average Hazard Ratios
+
+![](example_study_report_files/figure-html/tte_ahr_figure-1.png)
 
 Figure 1 shows the graph where the hypotheses of interest are
 represented by the elliptical nodes. Each node has the hypothesis weight
@@ -79,69 +128,48 @@ rejected) at interim or final analyses.
 
 **Table 2. Summary of Interim Analyses (by hypotheses)**
 
-    #>  ────────────────────────────────────────────────────────
-    #>    Hypothes   Analysis   Criteria   Expected   Events /  
-    #>    is                    for        analysis     sample  
-    #>                          conduct        time       size  
-    #>  ────────────────────────────────────────────────────────
-    #>    H1: CR            1   500 CR         28          500  
-    #>                          outcomes                        
-    #>    H2: OS            1   500 CR         28          187  
-    #>                          outcomes                        
-    #>    H2: OS            2   234 OS         32.8        234  
-    #>                          events                          
-    #>    H2: OS            3   284 OS         39.4        284  
-    #>                          events                          
-    #>    H2: OS            4   334 OS         48.7        334  
-    #>                          events                          
-    #>    H3: EFS           1   500 CR         28          248  
-    #>                          outcomes                        
-    #>    H3: EFS           2   234 OS         32.8        306  
-    #>                          events                          
-    #>    H3: EFS           3   284 OS         39.4        362  
-    #>                          events                          
-    #>    H3: EFS           4   334 OS         48.7        413  
-    #>                          events                          
-    #>  ────────────────────────────────────────────────────────
-    #> 
-    #> Column names: Hypothesis, Analysis, Criteria for conduct,
-    #> Expected analysis time, Events / sample size, Information
-    #> fraction
-    #> 
-    #> 5/6 columns shown.
+|  |  |  |  |  |
+|----|----|---:|---:|---:|
+| Analysis | Criteria for conduct | Events / sample size | Expected analysis time, mo | Information fraction, % |
+| H1: CR |  |  |  |  |
+| 1 | 500 CR outcomes | 500 | 28.0 | 100.00% |
+| H2: OS |  |  |  |  |
+| 1 | 500 CR outcomes | 187 | 28.0 | 55.98% |
+| 2 | 234 OS events | 234 | 32.8 | 70.06% |
+| 3 | 284 OS events | 284 | 39.4 | 85.03% |
+| 4 | 334 OS events | 334 | 48.7 | 100.00% |
+| H3: EFS |  |  |  |  |
+| 1 | 500 CR outcomes | 248 | 28.0 | 60.12% |
+| 2 | 234 OS events | 306 | 32.8 | 74.04% |
+| 3 | 284 OS events | 362 | 39.4 | 87.70% |
+| 4 | 334 OS events | 413 | 48.7 | 100.00% |
+
+Summary of interim analyses by hypothesis {#tab:iaDetailsTableA .table
+.huxtable quarto-disable-processing="true"
+style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 **Table 3. Summary of Interim Analyses (by calendar analysis)**
 
-    #>  ────────────────────────────────────────────────────────
-    #>    Hypothes   Analysis   Criteria   Expected   Events /  
-    #>    is                    for        analysis     sample  
-    #>                          conduct        time       size  
-    #>  ────────────────────────────────────────────────────────
-    #>    H1: CR            1   500 CR         28          500  
-    #>                          outcomes                        
-    #>    H2: OS            1   500 CR         28          187  
-    #>                          outcomes                        
-    #>    H3: EFS           1   500 CR         28          248  
-    #>                          outcomes                        
-    #>    H2: OS            2   234 OS         32.8        234  
-    #>                          events                          
-    #>    H3: EFS           2   234 OS         32.8        306  
-    #>                          events                          
-    #>    H2: OS            3   284 OS         39.4        284  
-    #>                          events                          
-    #>    H3: EFS           3   284 OS         39.4        362  
-    #>                          events                          
-    #>    H2: OS            4   334 OS         48.7        334  
-    #>                          events                          
-    #>    H3: EFS           4   334 OS         48.7        413  
-    #>                          events                          
-    #>  ────────────────────────────────────────────────────────
-    #> 
-    #> Column names: Hypothesis, Analysis, Criteria for conduct,
-    #> Expected analysis time, Events / sample size, Information
-    #> fraction
-    #> 
-    #> 5/6 columns shown.
+|  |  |  |  |
+|----|---:|---:|---:|
+| Hypothesis | Analysis | Events / sample size | Information fraction, % |
+| 500 CR outcomes (Expected analysis time: 28.0 mo) |  |  |  |
+| H1: CR | 1 | 500 | 100.00% |
+| H2: OS | 1 | 187 | 55.98% |
+| H3: EFS | 1 | 248 | 60.12% |
+| 234 OS events (Expected analysis time: 32.8 mo) |  |  |  |
+| H2: OS | 2 | 234 | 70.06% |
+| H3: EFS | 2 | 306 | 74.04% |
+| 284 OS events (Expected analysis time: 39.4 mo) |  |  |  |
+| H2: OS | 3 | 284 | 85.03% |
+| H3: EFS | 3 | 362 | 87.70% |
+| 334 OS events (Expected analysis time: 48.7 mo) |  |  |  |
+| H2: OS | 4 | 334 | 100.00% |
+| H3: EFS | 4 | 413 | 100.00% |
+
+Summary of interim analyses by criteria for conduct
+{#tab:iaDetailsTableB .table .huxtable quarto-disable-processing="true"
+style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 **Figure 2. Information Factor Over Time by Hypothesis**
 
@@ -166,26 +194,22 @@ trigger**
 
 **Table 4. Weight Allocation Scenarios**
 
-    #>    ───────────────────────────────────────────────────
-    #>      Hypothesis   Local alpha   Weight   Testing      
-    #>                         level            scenario     
-    #>    ───────────────────────────────────────────────────
-    #>      H1: CR             0.01       0.4   Initial      
-    #>                                          allocation   
-    #>      H1: CR             0.025      1     Successful   
-    #>                                          H2, H3       
-    #>      H2: OS             0.015      0.6   Initial      
-    #>                                          allocation   
-    #>      H2: OS             0.025      1     Successful   
-    #>                                          H1           
-    #>      H3: EFS            0.015      0.6   Successful   
-    #>                                          H2           
-    #>      H3: EFS            0.025      1     Successful   
-    #>                                          H1, H2       
-    #>    ───────────────────────────────────────────────────
-    #> 
-    #> Column names: Hypothesis, Local alpha level, Weight,
-    #> Testing scenario
+|                   |        |                    |
+|------------------:|-------:|--------------------|
+| Local alpha level | Weight | Testing scenario   |
+|            H1: CR |        |                    |
+|           0.01000 |    0.4 | Initial allocation |
+|           0.02500 |      1 | Successful H2, H3  |
+|            H2: OS |        |                    |
+|           0.01500 |    0.6 | Initial allocation |
+|           0.02500 |      1 | Successful H1      |
+|           H3: EFS |        |                    |
+|           0.01500 |    0.6 | Successful H2      |
+|           0.02500 |      1 | Successful H1, H2  |
+
+Summary of alpha allocation by hypothesis {#tab:graphTable .table
+.huxtable quarto-disable-processing="true"
+style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 **Table 5. Boundary Specifications**
 
@@ -196,150 +220,91 @@ and the information fractions. The timing of analyses is expressed in
 terms of statistical information fractions. The table also reports local
 power at each analysis time.
 
-    #>  ────────────────────────────────────────────────────────
-    #>    Hypothes   Analysis      Local   Informat    Nominal  
-    #>    is                       alpha        ion    p-value  
-    #>                             level   fraction             
-    #>  ────────────────────────────────────────────────────────
-    #>    H1: CR            1      0.01        1       0.01     
-    #>    H1: CR            1      0.025       1       0.025    
-    #>    H2: OS            1      0.015       0.56    0.001    
-    #>    H2: OS            2      0.015       0.7     0.00876  
-    #>    H2: OS            3      0.015       0.85    0.00717  
-    #>    H2: OS            4      0.015       1       0.00848  
-    #>    H2: OS            1      0.025       0.56    0.001    
-    #>    H2: OS            2      0.025       0.7     0.0147   
-    #>    H2: OS            3      0.025       0.85    0.0125   
-    #>    H2: OS            4      0.025       1       0.0149   
-    #>    H3: EFS           1      0.015       0.6     0.001    
-    #>    H3: EFS           2      0.015       0.74    0.0095   
-    #>    H3: EFS           3      0.015       0.88    0.00753  
-    #>    H3: EFS           4      0.015       1       0.00832  
-    #>    H3: EFS           1      0.025       0.6     0.001    
-    #>    H3: EFS           2      0.025       0.74    0.0159   
-    #>    H3: EFS           3      0.025       0.88    0.0131   
-    #>    H3: EFS           4      0.025       1       0.0147   
-    #>  ────────────────────────────────────────────────────────
-    #> 
-    #> Column names: Hypothesis, Analysis, Local alpha level,
-    #> Information fraction, Nominal p-value, Exit hurdle, Local
-    #> power
-    #> 
-    #> 5/7 columns shown.
+|  |  |  |  |  |  |
+|----|---:|---:|---:|---:|---:|
+| Analysis | Local alpha level | Nominal p-value | Exit hurdle | Local power | Information fraction, % |
+| H1: CR |  |  |  |  |  |
+| 1 | 0.01000 | 0.01000 | 0.104 | 85.551% | 100.00% |
+| 1 | 0.02500 | 0.02500 | 0.088 | 92.379% | 100.00% |
+| H2: OS |  |  |  |  |  |
+| 1 | 0.01500 | 0.00100 | 0.636 | 29.177% | 55.98% |
+| 2 | 0.01500 | 0.00876 | 0.733 | 68.021% | 70.06% |
+| 3 | 0.01500 | 0.00717 | 0.748 | 78.351% | 85.03% |
+| 4 | 0.01500 | 0.00848 | 0.770 | 86.995% | 100.00% |
+| 1 | 0.02500 | 0.00100 | 0.636 | 29.177% | 55.98% |
+| 2 | 0.02500 | 0.01472 | 0.752 | 74.783% | 70.06% |
+| 3 | 0.02500 | 0.01251 | 0.766 | 84.062% | 85.03% |
+| 4 | 0.02500 | 0.01493 | 0.788 | 91.232% | 100.00% |
+| H3: EFS |  |  |  |  |  |
+| 1 | 0.01500 | 0.00100 | 0.676 | 47.949% | 60.12% |
+| 2 | 0.01500 | 0.00950 | 0.765 | 85.213% | 74.04% |
+| 3 | 0.01500 | 0.00753 | 0.775 | 91.465% | 87.70% |
+| 4 | 0.01500 | 0.00832 | 0.790 | 95.564% | 100.00% |
+| 1 | 0.02500 | 0.00100 | 0.676 | 47.949% | 60.12% |
+| 2 | 0.02500 | 0.01593 | 0.782 | 89.508% | 74.04% |
+| 3 | 0.02500 | 0.01314 | 0.792 | 94.515% | 87.70% |
+| 4 | 0.02500 | 0.01468 | 0.807 | 97.542% | 100.00% |
+
+Operating characteristics {#tab:grSeqTable .table .huxtable
+quarto-disable-processing="true"
+style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 **Table 6a. Operating Characteristics at Each Analysis**
 
-    #>      ────────────────────────────────────────────────
-    #>        Analysis   Metric        Hypothesis    Value  
-    #>                                 subset               
-    #>      ────────────────────────────────────────────────
-    #>               1   Power         H1            0.875  
-    #>               1   Power         H2            0.29   
-    #>               1   Power         H3            0.143  
-    #>               1   Probability   H1, H2        0.907  
-    #>                   of success                         
-    #>                   for at                             
-    #>                   least one                          
-    #>                   Hi                                 
-    #>               1   Probability   H1, H2, H3    0.907  
-    #>                   of success                         
-    #>                   for at                             
-    #>                   least one                          
-    #>                   Hi                                 
-    #>               1   Probability   H1, H2, H3    0.133  
-    #>                   of success                         
-    #>                   for all Hi                         
-    #>               2   Power         H1            0.899  
-    #>               2   Power         H2            0.742  
-    #>               2   Power         H3            0.663  
-    #>               2   Probability   H1, H2        0.956  
-    #>                   of success                         
-    #>                   for at                             
-    #>                   least one                          
-    #>                   Hi                                 
-    #>               2   Probability   H1, H2, H3    0.956  
-    #>                   of success                         
-    #>                   for at                             
-    #>                   least one                          
-    #>                   Hi                                 
-    #>               2   Probability   H1, H2, H3    0.622  
-    #>                   of success                         
-    #>                   for all Hi                         
-    #>               3   Power         H1            0.907  
-    #>               3   Power         H2            0.842  
-    #>               3   Power         H3            0.788  
-    #>               3   Probability   H1, H2        0.969  
-    #>                   of success                         
-    #>                   for at                             
-    #>                   least one                          
-    #>                   Hi                                 
-    #>               3   Probability   H1, H2, H3    0.969  
-    #>                   of success                         
-    #>                   for at                             
-    #>                   least one                          
-    #>                   Hi                                 
-    #>               3   Probability   H1, H2, H3    0.736  
-    #>                   of success                         
-    #>                   for all Hi                         
-    #>               4   Power         H1            0.919  
-    #>               4   Power         H2            0.91   
-    #>               4   Power         H3            0.874  
-    #>               4   Probability   H1, H2        0.986  
-    #>                   of success                         
-    #>                   for at                             
-    #>                   least one                          
-    #>                   Hi                                 
-    #>               4   Probability   H1, H2, H3    0.986  
-    #>                   of success                         
-    #>                   for at                             
-    #>                   least one                          
-    #>                   Hi                                 
-    #>               4   Probability   H1, H2, H3    0.812  
-    #>                   of success                         
-    #>                   for all Hi                         
-    #>      ────────────────────────────────────────────────
-    #> 
-    #> Column names: Analysis, Metric, Hypothesis subset, Value
+|  |  |  |  |
+|---:|----|----|---:|
+| Analysis | Metric | Hypothesis subset | Probability, % |
+| 1 | Power | H1 | 87.500% |
+|  |  | H2 | 29.000% |
+|  |  | H3 | 14.300% |
+|  | Probability of success for at least one Hi | H1, H2 | 90.700% |
+|  |  | H1, H2, H3 | 90.700% |
+|  | Probability of success for all Hi | H1, H2, H3 | 13.300% |
+| 2 | Power | H1 | 89.900% |
+|  |  | H2 | 74.200% |
+|  |  | H3 | 66.300% |
+|  | Probability of success for at least one Hi | H1, H2 | 95.600% |
+|  |  | H1, H2, H3 | 95.600% |
+|  | Probability of success for all Hi | H1, H2, H3 | 62.200% |
+| 3 | Power | H1 | 90.700% |
+|  |  | H2 | 84.200% |
+|  |  | H3 | 78.800% |
+|  | Probability of success for at least one Hi | H1, H2 | 96.900% |
+|  |  | H1, H2, H3 | 96.900% |
+|  | Probability of success for all Hi | H1, H2, H3 | 73.600% |
+| 4 | Power | H1 | 91.900% |
+|  |  | H2 | 91.000% |
+|  |  | H3 | 87.400% |
+|  | Probability of success for at least one Hi | H1, H2 | 98.600% |
+|  |  | H1, H2, H3 | 98.600% |
+|  | Probability of success for all Hi | H1, H2, H3 | 81.200% |
+
+Operating characteristics by analysis {#tab:operatingCharByAnalysis
+.table .huxtable quarto-disable-processing="true"
+style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 **Table 6b. Operating Characteristics Across Analyses**
 
-    #>      ───────────────────────────────────────────────
-    #>        Metric             Hypothesis         Value  
-    #>                           subset                    
-    #>      ───────────────────────────────────────────────
-    #>        Expected Success   H1                  1.08  
-    #>        Analysis                                     
-    #>        Expected Success   H2                  1.94  
-    #>        Analysis                                     
-    #>        Expected Success   H3                  2.18  
-    #>        Analysis                                     
-    #>        Expected Success   H1, H2              1.13  
-    #>        Analysis (at                                 
-    #>        least one Hi)                                
-    #>        Expected Success   H1, H2, H3          1.13  
-    #>        Analysis (at                                 
-    #>        least one Hi)                                
-    #>        Expected Success   H1, H2, H3          2.16  
-    #>        Analysis (for                                
-    #>        all Hi)                                      
-    #>        Expected Success   H1                 28.5   
-    #>        Time                                         
-    #>        Expected Success   H2                 33.2   
-    #>        Time                                         
-    #>        Expected Success   H3                 34.5   
-    #>        Time                                         
-    #>        Expected Success   H1, H2             28.8   
-    #>        Time (at least                               
-    #>        one Hi)                                      
-    #>        Expected Success   H1, H2, H3         28.8   
-    #>        Time (at least                               
-    #>        one Hi)                                      
-    #>        Expected Success   H1, H2, H3         34.4   
-    #>        Time (for all                                
-    #>        Hi)                                          
-    #>      ───────────────────────────────────────────────
-    #> 
-    #> Column names: Metric, Hypothesis subset, Value
+|                                             |                   |       |
+|---------------------------------------------|-------------------|------:|
+| Metric                                      | Hypothesis subset | Value |
+| Expected Success Analysis                   | H1                |  1.08 |
+|                                             | H2                |  1.94 |
+|                                             | H3                |  2.18 |
+| Expected Success Analysis (at least one Hi) | H1, H2            |  1.13 |
+|                                             | H1, H2, H3        |  1.13 |
+| Expected Success Analysis (for all Hi)      | H1, H2, H3        |  2.16 |
+| Expected Success Time                       | H1                |  28.5 |
+|                                             | H2                |  33.2 |
+|                                             | H3                |  34.5 |
+| Expected Success Time (at least one Hi)     | H1, H2            |  28.7 |
+|                                             | H1, H2, H3        |  28.7 |
+| Expected Success Time (for all Hi)          | H1, H2, H3        |  34.4 |
+
+Operating characteristics across analyses
+{#tab:operatingCharAcrossAnalyses .table .huxtable
+quarto-disable-processing="true"
+style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 **Figure 4. Alpha-spending functions**
 
@@ -402,4 +367,4 @@ graphical approaches. *Statistics in Biopharmaceutical Research.*
 
 ------------------------------------------------------------------------
 
-*Report generated on 2026-05-24 00:07:24.199649*
+*Report generated on 2026-05-29 17:43:29.100101*

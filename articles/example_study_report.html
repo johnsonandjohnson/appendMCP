@@ -40,6 +40,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/configuration-guide.html">Configuration Guide for appendMCP</a></li>
     <li><a class="dropdown-item" href="../articles/example_study_report.html">Example Study Report - Group Sequential Design with Multiple Testing</a></li>
+    <li><a class="dropdown-item" href="../articles/platform_study.html">Platform Trial with Arm Added Midway</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -62,7 +63,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Example Study Report - Group Sequential Design with Multiple Testing</h1>
             
-            <h4 data-toc-skip class="date">2026-05-24</h4>
+            <h4 data-toc-skip class="date">2026-05-29</h4>
       
 
       <div class="d-none name"><code>example_study_report.Rmd</code></div>
@@ -75,6 +76,26 @@
 </h2>
 <p>With a 28-month accrual period, the total sample size planned for the
 study is 600.</p>
+</div>
+<div class="section level2 tabset">
+<h2 class="tabset" id="enrollment">Enrollment<a class="anchor" aria-label="anchor" href="#enrollment"></a>
+</h2>
+
+
+<ul class="nav nav-tabs" id="enrollment" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#piece-wise-constant-enrollment-rates" id="piece-wise-constant-enrollment-rates-tab" type="button" role="tab" aria-controls="piece-wise-constant-enrollment-rates" aria-selected="true" class="active nav-link">Piece-wise Constant Enrollment Rates</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#cumulative-enrollment" id="cumulative-enrollment-tab" type="button" role="tab" aria-controls="cumulative-enrollment" aria-selected="false" class="nav-link">Cumulative Enrollment</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="piece-wise-constant-enrollment-rates" role="tabpanel" aria-labelledby="piece-wise-constant-enrollment-rates-tab">
+
+<p><img src="example_study_report_files/figure-html/enrollment_er_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="tab-pane" id="cumulative-enrollment" role="tabpanel" aria-labelledby="cumulative-enrollment-tab">
+
+<p><img src="example_study_report_files/figure-html/enrollment_er_cum_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="multiplicity-adjustment">Multiplicity Adjustment<a class="anchor" aria-label="anchor" href="#multiplicity-adjustment"></a>
@@ -99,32 +120,132 @@ sequentially) together with the effect sizes and planned maximum
 statistical information (sample size or number of events).</p>
 <p><strong>Table 1. Summary of Primary and Key Secondary
 Hypotheses</strong></p>
-<pre><code><span><span class="co">#&gt;   ─────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;     <span style="font-weight: bold;">Label</span>   <span style="font-weight: bold;">Endpoint</span>   <span style="font-weight: bold;">Type    </span>   <span style="font-weight: bold;"> Initial</span>   <span style="font-weight: bold;">GSD     </span>  </span></span>
-<span><span class="co">#&gt;                                   <span style="font-weight: bold;">  weight</span>   <span style="font-weight: bold;">spending</span>  </span></span>
-<span><span class="co">#&gt;                                              <span style="font-weight: bold;">fn      </span>  </span></span>
-<span><span class="co">#&gt;   ─────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;     H1      CR         Primary         0.4   N/A       </span></span>
-<span><span class="co">#&gt;     H2      OS         Primary         0.6   HSD(-1),  </span></span>
-<span><span class="co">#&gt;                                              with a    </span></span>
-<span><span class="co">#&gt;                                              nominal   </span></span>
-<span><span class="co">#&gt;                                              spend of  </span></span>
-<span><span class="co">#&gt;                                              0.001 at  </span></span>
-<span><span class="co">#&gt;                                              IA1       </span></span>
-<span><span class="co">#&gt;     H3      EFS        Secondar        0     HSD(-1),  </span></span>
-<span><span class="co">#&gt;                        y                     with a    </span></span>
-<span><span class="co">#&gt;                                              nominal   </span></span>
-<span><span class="co">#&gt;                                              spend of  </span></span>
-<span><span class="co">#&gt;                                              0.001 at  </span></span>
-<span><span class="co">#&gt;                                              IA1       </span></span>
-<span><span class="co">#&gt;   ─────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Column names: Label, Endpoint, Type, Initial weight, GSD</span></span>
-<span><span class="co">#&gt; spending fn, Effect size, Maximum events / sample size</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 5/7 columns shown.</span></span></code></pre>
+<table class="table huxtable" data-quarto-disable-processing="true" style="width: 100%; margin-left: auto; margin-right: auto;" id="tab:table1">
+<caption style="caption-side: top; text-align: center;">Trial Design Summary</caption>
+<col style="width: 7.5%">
+<col style="width: 7.5%">
+<col style="width: 10%">
+<col style="width: 12.5%">
+<col style="width: 30%">
+<col style="width: 12.5%">
+<col style="width: 20%">
+<tbody>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Label</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Endpoint</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Type</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Initial weight</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">GSD spending fn</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Effect size*</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Maximum events / sample size</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">CR</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Primary</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.4</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">N/A</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Delta = 15%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">500</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">OS</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Primary</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.6</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">HSD(-1), with a nominal spend of 0.001 at IA1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">HR = 0.69</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">334</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">EFS</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Secondary</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">HSD(-1), with a nominal spend of 0.001 at IA1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">AHR = 0.68</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">413</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="7" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">*For a hypothesis corresponding to a time-to-event variable subject to non-proportional hazards, the listed effect size is the average hazard ratio at the final analysis of this hypothesis.</td></tr>
+</tbody>
+</table>
 <p>The overall type I family-wise error rate for 3 hypotheses, over all
 (interim and final) analyses, is controlled to 2.5% (one-sided).</p>
+</div>
+<div class="section level2 tabset">
+<h2 class="tabset" id="distribution-assumptions">Distribution Assumptions<a class="anchor" aria-label="anchor" href="#distribution-assumptions"></a>
+</h2>
+
+
+<ul class="nav nav-tabs" id="distribution-assumptions" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#binary-endpoints" id="binary-endpoints-tab" type="button" role="tab" aria-controls="binary-endpoints" aria-selected="true" class="active nav-link">Binary Endpoints</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#time-to-event-endpoints" id="time-to-event-endpoints-tab" type="button" role="tab" aria-controls="time-to-event-endpoints" aria-selected="false" class="nav-link">Time-to-Event Endpoints</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="binary-endpoints" role="tabpanel" aria-labelledby="binary-endpoints-tab">
+
+<div class="section level4">
+<h4 id="rates">Rates<a class="anchor" aria-label="anchor" href="#rates"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/bin_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="absolute-risk-differences">Absolute Risk Differences<a class="anchor" aria-label="anchor" href="#absolute-risk-differences"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/bin_rd_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+</div>
+<div class="tab-pane" id="time-to-event-endpoints" role="tabpanel" aria-labelledby="time-to-event-endpoints-tab">
+
+<div class="section level4">
+<h4 id="drop-out-rates">Drop-out Rates<a class="anchor" aria-label="anchor" href="#drop-out-rates"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_dropout_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="cumulative-drop-out-probabilities">Cumulative Drop-out Probabilities<a class="anchor" aria-label="anchor" href="#cumulative-drop-out-probabilities"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_dropout_probability_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="hazard-rate">Hazard Rate<a class="anchor" aria-label="anchor" href="#hazard-rate"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_hazard_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="cumulative-hazard">Cumulative Hazard<a class="anchor" aria-label="anchor" href="#cumulative-hazard"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_cumhaz_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="survival-curves">Survival Curves<a class="anchor" aria-label="anchor" href="#survival-curves"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="median-survival">Median Survival<a class="anchor" aria-label="anchor" href="#median-survival"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_median_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="survival-quantiles">Survival Quantiles<a class="anchor" aria-label="anchor" href="#survival-quantiles"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_quantiles_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="enrollment-weighted-survival-curves">Enrollment Weighted Survival Curves<a class="anchor" aria-label="anchor" href="#enrollment-weighted-survival-curves"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_weighted_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="piece-wise-hazard-ratios">Piece-wise Hazard Ratios<a class="anchor" aria-label="anchor" href="#piece-wise-hazard-ratios"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_hr_figure-1.png" class="r-plt" alt="" width="624"></p>
+</div>
+<div class="section level4">
+<h4 id="average-hazard-ratios">Average Hazard Ratios<a class="anchor" aria-label="anchor" href="#average-hazard-ratios"></a>
+</h4>
+<p><img src="example_study_report_files/figure-html/tte_ahr_figure-1.png" class="r-plt" alt="" width="624"></p>
 <p>Figure 1 shows the graph where the hypotheses of interest are
 represented by the elliptical nodes. Each node has the hypothesis weight
 assigned to it (denoted by
@@ -141,6 +262,9 @@ analyses.</p>
 <p><strong>Figure 1. Graph Depicting Multiple Hypothesis Testing
 Strategy</strong></p>
 <p><img src="example_study_report_files/figure-html/MTgraph-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+</div>
+</div>
+</div>
 </div>
 <div class="section level2 tabset">
 <h2 class="tabset" id="interim-analyses">Interim Analyses<a class="anchor" aria-label="anchor" href="#interim-analyses"></a>
@@ -160,71 +284,167 @@ Strategy</strong></p>
 
 <p><strong>Table 2. Summary of Interim Analyses (by
 hypotheses)</strong></p>
-<pre><code><span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;    <span style="font-weight: bold;">Hypothes</span>   <span style="font-weight: bold;">Analysis</span>   <span style="font-weight: bold;">Criteria</span>   <span style="font-weight: bold;">Expected</span>   <span style="font-weight: bold;">Events /</span>  </span></span>
-<span><span class="co">#&gt;    <span style="font-weight: bold;">is      </span>              <span style="font-weight: bold;">for     </span>   <span style="font-weight: bold;">analysis</span>   <span style="font-weight: bold;">  sample</span>  </span></span>
-<span><span class="co">#&gt;                          <span style="font-weight: bold;">conduct </span>   <span style="font-weight: bold;">    time</span>   <span style="font-weight: bold;">    size</span>  </span></span>
-<span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;    H1: CR            1   500 CR         28          500  </span></span>
-<span><span class="co">#&gt;                          outcomes                        </span></span>
-<span><span class="co">#&gt;    H2: OS            1   500 CR         28          187  </span></span>
-<span><span class="co">#&gt;                          outcomes                        </span></span>
-<span><span class="co">#&gt;    H2: OS            2   234 OS         32.8        234  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H2: OS            3   284 OS         39.4        284  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H2: OS            4   334 OS         48.7        334  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H3: EFS           1   500 CR         28          248  </span></span>
-<span><span class="co">#&gt;                          outcomes                        </span></span>
-<span><span class="co">#&gt;    H3: EFS           2   234 OS         32.8        306  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H3: EFS           3   284 OS         39.4        362  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H3: EFS           4   334 OS         48.7        413  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Column names: Hypothesis, Analysis, Criteria for conduct,</span></span>
-<span><span class="co">#&gt; Expected analysis time, Events / sample size, Information</span></span>
-<span><span class="co">#&gt; fraction</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 5/6 columns shown.</span></span></code></pre>
+<table class="table huxtable" data-quarto-disable-processing="true" style="width: 100%; margin-left: auto; margin-right: auto;" id="tab:iaDetailsTableA">
+<caption style="caption-side: top; text-align: center;">Summary of interim analyses by hypothesis</caption>
+<col>
+<col>
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Analysis</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Criteria for conduct</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Events / sample size</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Expected analysis time, mo</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Information fraction, %</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="5" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H1: CR</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">500 CR outcomes</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">28.0</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="5" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H2: OS</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">500 CR outcomes</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">187</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">28.0</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">55.98%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">234 OS events</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">234</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">32.8</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">70.06%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">284 OS events</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">284</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">39.4</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">85.03%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">334 OS events</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">334</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">48.7</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="5" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H3: EFS</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">500 CR outcomes</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">248</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">28.0</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">60.12%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">234 OS events</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">306</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">32.8</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">74.04%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">284 OS events</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">362</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">39.4</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">87.70%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">334 OS events</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">413</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">48.7</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="tab-pane" id="ia-by-calendar-time" role="tabpanel" aria-labelledby="ia-by-calendar-time-tab">
 
 <p><strong>Table 3. Summary of Interim Analyses (by calendar
 analysis)</strong></p>
-<pre><code><span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;    <span style="font-weight: bold;">Hypothes</span>   <span style="font-weight: bold;">Analysis</span>   <span style="font-weight: bold;">Criteria</span>   <span style="font-weight: bold;">Expected</span>   <span style="font-weight: bold;">Events /</span>  </span></span>
-<span><span class="co">#&gt;    <span style="font-weight: bold;">is      </span>              <span style="font-weight: bold;">for     </span>   <span style="font-weight: bold;">analysis</span>   <span style="font-weight: bold;">  sample</span>  </span></span>
-<span><span class="co">#&gt;                          <span style="font-weight: bold;">conduct </span>   <span style="font-weight: bold;">    time</span>   <span style="font-weight: bold;">    size</span>  </span></span>
-<span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;    H1: CR            1   500 CR         28          500  </span></span>
-<span><span class="co">#&gt;                          outcomes                        </span></span>
-<span><span class="co">#&gt;    H2: OS            1   500 CR         28          187  </span></span>
-<span><span class="co">#&gt;                          outcomes                        </span></span>
-<span><span class="co">#&gt;    H3: EFS           1   500 CR         28          248  </span></span>
-<span><span class="co">#&gt;                          outcomes                        </span></span>
-<span><span class="co">#&gt;    H2: OS            2   234 OS         32.8        234  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H3: EFS           2   234 OS         32.8        306  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H2: OS            3   284 OS         39.4        284  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H3: EFS           3   284 OS         39.4        362  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H2: OS            4   334 OS         48.7        334  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;    H3: EFS           4   334 OS         48.7        413  </span></span>
-<span><span class="co">#&gt;                          events                          </span></span>
-<span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Column names: Hypothesis, Analysis, Criteria for conduct,</span></span>
-<span><span class="co">#&gt; Expected analysis time, Events / sample size, Information</span></span>
-<span><span class="co">#&gt; fraction</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 5/6 columns shown.</span></span></code></pre>
+<table class="table huxtable" data-quarto-disable-processing="true" style="width: 100%; margin-left: auto; margin-right: auto;" id="tab:iaDetailsTableB">
+<caption style="caption-side: top; text-align: center;">Summary of interim analyses by criteria for conduct</caption>
+<col>
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Hypothesis</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Analysis</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Events / sample size</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Information fraction, %</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="4" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">500 CR outcomes (Expected analysis time: 28.0 mo)</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1: CR</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2: OS</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">187</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">55.98%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3: EFS</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">248</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">60.12%</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="4" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">234 OS events (Expected analysis time: 32.8 mo)</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2: OS</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">234</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">70.06%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3: EFS</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">306</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">74.04%</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="4" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">284 OS events (Expected analysis time: 39.4 mo)</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2: OS</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">284</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">85.03%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3: EFS</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">362</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">87.70%</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="4" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">334 OS events (Expected analysis time: 48.7 mo)</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2: OS</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">334</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3: EFS</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">413</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="tab-pane" id="information-flow" role="tabpanel" aria-labelledby="information-flow-tab">
 
@@ -261,26 +481,52 @@ trigger</strong></p>
 <div class="active  tab-pane" id="scenarios" role="tabpanel" aria-labelledby="scenarios-tab">
 
 <p><strong>Table 4. Weight Allocation Scenarios</strong></p>
-<pre><code><span><span class="co">#&gt;    ───────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;      <span style="font-weight: bold;">Hypothesis</span>   <span style="font-weight: bold;">Local alpha</span>   <span style="font-weight: bold;">Weight</span>   <span style="font-weight: bold;">Testing    </span>  </span></span>
-<span><span class="co">#&gt;                   <span style="font-weight: bold;">      level</span>            <span style="font-weight: bold;">scenario   </span>  </span></span>
-<span><span class="co">#&gt;    ───────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;      H1: CR             0.01       0.4   Initial      </span></span>
-<span><span class="co">#&gt;                                          allocation   </span></span>
-<span><span class="co">#&gt;      H1: CR             0.025      1     Successful   </span></span>
-<span><span class="co">#&gt;                                          H2, H3       </span></span>
-<span><span class="co">#&gt;      H2: OS             0.015      0.6   Initial      </span></span>
-<span><span class="co">#&gt;                                          allocation   </span></span>
-<span><span class="co">#&gt;      H2: OS             0.025      1     Successful   </span></span>
-<span><span class="co">#&gt;                                          H1           </span></span>
-<span><span class="co">#&gt;      H3: EFS            0.015      0.6   Successful   </span></span>
-<span><span class="co">#&gt;                                          H2           </span></span>
-<span><span class="co">#&gt;      H3: EFS            0.025      1     Successful   </span></span>
-<span><span class="co">#&gt;                                          H1, H2       </span></span>
-<span><span class="co">#&gt;    ───────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Column names: Hypothesis, Local alpha level, Weight,</span></span>
-<span><span class="co">#&gt; Testing scenario</span></span></code></pre>
+<table class="table huxtable" data-quarto-disable-processing="true" style="width: 100%; margin-left: auto; margin-right: auto;" id="tab:graphTable">
+<caption style="caption-side: top; text-align: center;">Summary of alpha allocation by hypothesis</caption>
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Local alpha level</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Weight</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Testing scenario</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H1: CR</td></tr>
+<tr>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01000</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.4</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Initial allocation</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Successful H2, H3</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H2: OS</td></tr>
+<tr>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.6</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Initial allocation</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Successful H1</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H3: EFS</td></tr>
+<tr>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.6</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Successful H2</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Successful H1, H2</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="tab-pane" id="boundary-specifications" role="tabpanel" aria-labelledby="boundary-specifications-tab">
 
@@ -291,154 +537,376 @@ the nominal p-value boundary derived from the alpha-spending function
 and the information fractions. The timing of analyses is expressed in
 terms of statistical information fractions. The table also reports local
 power at each analysis time.</p>
-<pre><code><span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;    <span style="font-weight: bold;">Hypothes</span>   <span style="font-weight: bold;">Analysis</span>   <span style="font-weight: bold;">   Local</span>   <span style="font-weight: bold;">Informat</span>   <span style="font-weight: bold;"> Nominal</span>  </span></span>
-<span><span class="co">#&gt;    <span style="font-weight: bold;">is      </span>              <span style="font-weight: bold;">   alpha</span>   <span style="font-weight: bold;">     ion</span>   <span style="font-weight: bold;"> p-value</span>  </span></span>
-<span><span class="co">#&gt;                          <span style="font-weight: bold;">   level</span>   <span style="font-weight: bold;">fraction</span>             </span></span>
-<span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;    H1: CR            1      0.01        1       0.01     </span></span>
-<span><span class="co">#&gt;    H1: CR            1      0.025       1       0.025    </span></span>
-<span><span class="co">#&gt;    H2: OS            1      0.015       0.56    0.001    </span></span>
-<span><span class="co">#&gt;    H2: OS            2      0.015       0.7     0.00876  </span></span>
-<span><span class="co">#&gt;    H2: OS            3      0.015       0.85    0.00717  </span></span>
-<span><span class="co">#&gt;    H2: OS            4      0.015       1       0.00848  </span></span>
-<span><span class="co">#&gt;    H2: OS            1      0.025       0.56    0.001    </span></span>
-<span><span class="co">#&gt;    H2: OS            2      0.025       0.7     0.0147   </span></span>
-<span><span class="co">#&gt;    H2: OS            3      0.025       0.85    0.0125   </span></span>
-<span><span class="co">#&gt;    H2: OS            4      0.025       1       0.0149   </span></span>
-<span><span class="co">#&gt;    H3: EFS           1      0.015       0.6     0.001    </span></span>
-<span><span class="co">#&gt;    H3: EFS           2      0.015       0.74    0.0095   </span></span>
-<span><span class="co">#&gt;    H3: EFS           3      0.015       0.88    0.00753  </span></span>
-<span><span class="co">#&gt;    H3: EFS           4      0.015       1       0.00832  </span></span>
-<span><span class="co">#&gt;    H3: EFS           1      0.025       0.6     0.001    </span></span>
-<span><span class="co">#&gt;    H3: EFS           2      0.025       0.74    0.0159   </span></span>
-<span><span class="co">#&gt;    H3: EFS           3      0.025       0.88    0.0131   </span></span>
-<span><span class="co">#&gt;    H3: EFS           4      0.025       1       0.0147   </span></span>
-<span><span class="co">#&gt;  ────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Column names: Hypothesis, Analysis, Local alpha level,</span></span>
-<span><span class="co">#&gt; Information fraction, Nominal p-value, Exit hurdle, Local</span></span>
-<span><span class="co">#&gt; power</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 5/7 columns shown.</span></span></code></pre>
+<table class="table huxtable" data-quarto-disable-processing="true" style="width: 100%; margin-left: auto; margin-right: auto;" id="tab:grSeqTable">
+<caption style="caption-side: top; text-align: center;">Operating characteristics</caption>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Analysis</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Local alpha level</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Nominal p-value</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Exit hurdle</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Local power</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Information fraction, %</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="6" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H1: CR</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01000</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01000</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.104</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">85.551%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.088</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">92.379%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="6" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H2: OS</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00100</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.636</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">29.177%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">55.98%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00876</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.733</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">68.021%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">70.06%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00717</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.748</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">78.351%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">85.03%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00848</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.770</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">86.995%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00100</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.636</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">29.177%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">55.98%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01472</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.752</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">74.783%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">70.06%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01251</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.766</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">84.062%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">85.03%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01493</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.788</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">91.232%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr><td class="huxtable-cell" colspan="6" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">H3: EFS</td></tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00100</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.676</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">47.949%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">60.12%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00950</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.765</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">85.213%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">74.04%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00753</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.775</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">91.465%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">87.70%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00832</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.790</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">95.564%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.00100</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.676</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">47.949%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">60.12%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01593</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.782</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">89.508%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">74.04%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01314</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.792</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">94.515%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">87.70%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.02500</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.01468</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">0.807</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">97.542%</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">100.00%</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="tab-pane" id="operating-characteristics-by-analysis" role="tabpanel" aria-labelledby="operating-characteristics-by-analysis-tab">
 
 <p><strong>Table 6a. Operating Characteristics at Each
 Analysis</strong></p>
-<pre><code><span><span class="co">#&gt;      ────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;        <span style="font-weight: bold;">Analysis</span>   <span style="font-weight: bold;">Metric     </span>   <span style="font-weight: bold;">Hypothesis </span>   <span style="font-weight: bold;">Value</span>  </span></span>
-<span><span class="co">#&gt;                                 <span style="font-weight: bold;">subset     </span>          </span></span>
-<span><span class="co">#&gt;      ────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;               1   Power         H1            0.875  </span></span>
-<span><span class="co">#&gt;               1   Power         H2            0.29   </span></span>
-<span><span class="co">#&gt;               1   Power         H3            0.143  </span></span>
-<span><span class="co">#&gt;               1   Probability   H1, H2        0.907  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for at                             </span></span>
-<span><span class="co">#&gt;                   least one                          </span></span>
-<span><span class="co">#&gt;                   Hi                                 </span></span>
-<span><span class="co">#&gt;               1   Probability   H1, H2, H3    0.907  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for at                             </span></span>
-<span><span class="co">#&gt;                   least one                          </span></span>
-<span><span class="co">#&gt;                   Hi                                 </span></span>
-<span><span class="co">#&gt;               1   Probability   H1, H2, H3    0.133  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for all Hi                         </span></span>
-<span><span class="co">#&gt;               2   Power         H1            0.899  </span></span>
-<span><span class="co">#&gt;               2   Power         H2            0.742  </span></span>
-<span><span class="co">#&gt;               2   Power         H3            0.663  </span></span>
-<span><span class="co">#&gt;               2   Probability   H1, H2        0.956  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for at                             </span></span>
-<span><span class="co">#&gt;                   least one                          </span></span>
-<span><span class="co">#&gt;                   Hi                                 </span></span>
-<span><span class="co">#&gt;               2   Probability   H1, H2, H3    0.956  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for at                             </span></span>
-<span><span class="co">#&gt;                   least one                          </span></span>
-<span><span class="co">#&gt;                   Hi                                 </span></span>
-<span><span class="co">#&gt;               2   Probability   H1, H2, H3    0.622  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for all Hi                         </span></span>
-<span><span class="co">#&gt;               3   Power         H1            0.907  </span></span>
-<span><span class="co">#&gt;               3   Power         H2            0.842  </span></span>
-<span><span class="co">#&gt;               3   Power         H3            0.788  </span></span>
-<span><span class="co">#&gt;               3   Probability   H1, H2        0.969  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for at                             </span></span>
-<span><span class="co">#&gt;                   least one                          </span></span>
-<span><span class="co">#&gt;                   Hi                                 </span></span>
-<span><span class="co">#&gt;               3   Probability   H1, H2, H3    0.969  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for at                             </span></span>
-<span><span class="co">#&gt;                   least one                          </span></span>
-<span><span class="co">#&gt;                   Hi                                 </span></span>
-<span><span class="co">#&gt;               3   Probability   H1, H2, H3    0.736  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for all Hi                         </span></span>
-<span><span class="co">#&gt;               4   Power         H1            0.919  </span></span>
-<span><span class="co">#&gt;               4   Power         H2            0.91   </span></span>
-<span><span class="co">#&gt;               4   Power         H3            0.874  </span></span>
-<span><span class="co">#&gt;               4   Probability   H1, H2        0.986  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for at                             </span></span>
-<span><span class="co">#&gt;                   least one                          </span></span>
-<span><span class="co">#&gt;                   Hi                                 </span></span>
-<span><span class="co">#&gt;               4   Probability   H1, H2, H3    0.986  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for at                             </span></span>
-<span><span class="co">#&gt;                   least one                          </span></span>
-<span><span class="co">#&gt;                   Hi                                 </span></span>
-<span><span class="co">#&gt;               4   Probability   H1, H2, H3    0.812  </span></span>
-<span><span class="co">#&gt;                   of success                         </span></span>
-<span><span class="co">#&gt;                   for all Hi                         </span></span>
-<span><span class="co">#&gt;      ────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Column names: Analysis, Metric, Hypothesis subset, Value</span></span></code></pre>
+<table class="table huxtable" data-quarto-disable-processing="true" style="width: 100%; margin-left: auto; margin-right: auto;" id="tab:operatingCharByAnalysis">
+<caption style="caption-side: top; text-align: center;">Operating characteristics by analysis</caption>
+<col>
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Analysis</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Metric</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Hypothesis subset</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Probability, %</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="6" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1</td>
+<td class="huxtable-cell" rowspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Power</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">87.500%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">29.000%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">14.300%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="2" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Probability of success for at least one Hi</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">90.700%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">90.700%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Probability of success for all Hi</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">13.300%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="6" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2</td>
+<td class="huxtable-cell" rowspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Power</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">89.900%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">74.200%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">66.300%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="2" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Probability of success for at least one Hi</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">95.600%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">95.600%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Probability of success for all Hi</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">62.200%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="6" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">3</td>
+<td class="huxtable-cell" rowspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Power</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">90.700%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">84.200%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">78.800%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="2" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Probability of success for at least one Hi</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">96.900%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">96.900%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Probability of success for all Hi</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">73.600%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="6" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">4</td>
+<td class="huxtable-cell" rowspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Power</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">91.900%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">91.000%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">87.400%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="2" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Probability of success for at least one Hi</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">98.600%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">98.600%</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Probability of success for all Hi</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">81.200%</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="tab-pane" id="operating-characteristics-overall" role="tabpanel" aria-labelledby="operating-characteristics-overall-tab">
 
 <p><strong>Table 6b. Operating Characteristics Across
 Analyses</strong></p>
-<pre><code><span><span class="co">#&gt;      ───────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;        <span style="font-weight: bold;">Metric          </span>   <span style="font-weight: bold;">Hypothesis      </span>   <span style="font-weight: bold;">Value</span>  </span></span>
-<span><span class="co">#&gt;                           <span style="font-weight: bold;">subset          </span>          </span></span>
-<span><span class="co">#&gt;      ───────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt;        Expected Success   H1                  1.08  </span></span>
-<span><span class="co">#&gt;        Analysis                                     </span></span>
-<span><span class="co">#&gt;        Expected Success   H2                  1.94  </span></span>
-<span><span class="co">#&gt;        Analysis                                     </span></span>
-<span><span class="co">#&gt;        Expected Success   H3                  2.18  </span></span>
-<span><span class="co">#&gt;        Analysis                                     </span></span>
-<span><span class="co">#&gt;        Expected Success   H1, H2              1.13  </span></span>
-<span><span class="co">#&gt;        Analysis (at                                 </span></span>
-<span><span class="co">#&gt;        least one Hi)                                </span></span>
-<span><span class="co">#&gt;        Expected Success   H1, H2, H3          1.13  </span></span>
-<span><span class="co">#&gt;        Analysis (at                                 </span></span>
-<span><span class="co">#&gt;        least one Hi)                                </span></span>
-<span><span class="co">#&gt;        Expected Success   H1, H2, H3          2.16  </span></span>
-<span><span class="co">#&gt;        Analysis (for                                </span></span>
-<span><span class="co">#&gt;        all Hi)                                      </span></span>
-<span><span class="co">#&gt;        Expected Success   H1                 28.5   </span></span>
-<span><span class="co">#&gt;        Time                                         </span></span>
-<span><span class="co">#&gt;        Expected Success   H2                 33.2   </span></span>
-<span><span class="co">#&gt;        Time                                         </span></span>
-<span><span class="co">#&gt;        Expected Success   H3                 34.5   </span></span>
-<span><span class="co">#&gt;        Time                                         </span></span>
-<span><span class="co">#&gt;        Expected Success   H1, H2             28.8   </span></span>
-<span><span class="co">#&gt;        Time (at least                               </span></span>
-<span><span class="co">#&gt;        one Hi)                                      </span></span>
-<span><span class="co">#&gt;        Expected Success   H1, H2, H3         28.8   </span></span>
-<span><span class="co">#&gt;        Time (at least                               </span></span>
-<span><span class="co">#&gt;        one Hi)                                      </span></span>
-<span><span class="co">#&gt;        Expected Success   H1, H2, H3         34.4   </span></span>
-<span><span class="co">#&gt;        Time (for all                                </span></span>
-<span><span class="co">#&gt;        Hi)                                          </span></span>
-<span><span class="co">#&gt;      ───────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Column names: Metric, Hypothesis subset, Value</span></span></code></pre>
+<table class="table huxtable" data-quarto-disable-processing="true" style="width: 100%; margin-left: auto; margin-right: auto;" id="tab:operatingCharAcrossAnalyses">
+<caption style="caption-side: top; text-align: center;">Operating characteristics across analyses</caption>
+<col>
+<col>
+<col>
+<tbody>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Metric</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Hypothesis subset</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;  font-weight: bold;">Value</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Expected Success Analysis </td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1.08</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1.94</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2.18</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="2" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Expected Success Analysis (at least one Hi)</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1.13</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">1.13</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Expected Success Analysis (for all Hi)</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">2.16</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="3" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Expected Success Time</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">28.5</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">33.2</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">34.5</td>
+</tr>
+<tr>
+<td class="huxtable-cell" rowspan="2" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Expected Success Time (at least one Hi)</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 0pt 0pt;    padding: 6pt 8pt 6pt 8pt;">28.7</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 0pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">28.7</td>
+</tr>
+<tr>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">Expected Success Time (for all Hi)</td>
+<td class="huxtable-cell" style="border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">H1, H2, H3</td>
+<td class="huxtable-cell" style="text-align: right;  border-style: solid solid solid solid; border-width: 1pt 0pt 1pt 0pt;    padding: 6pt 8pt 6pt 8pt;">34.4</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="tab-pane" id="spending-functions" role="tabpanel" aria-labelledby="spending-functions-tab">
 
@@ -636,7 +1104,7 @@ Analyses</strong></p>
 graphical approaches. <em>Statistics in Biopharmaceutical Research.</em>
 2013;5(4):311-320.</p>
 <hr>
-<p><em>Report generated on 2026-05-24 00:07:24.199649</em></p>
+<p><em>Report generated on 2026-05-29 17:43:29.100101</em></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
