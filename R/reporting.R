@@ -63,17 +63,35 @@ generate_report <- function(gsd_details, output_file = NULL, template_type = "ht
     stop("Report template not found: ", template_file)
   }
 
-  # Determine output format
+  # Copy template to a writable temp directory (fixes read-only file systems:
+
+  # Posit Connect, Docker, HPC shared libraries)
+  render_dir <- tempfile("report_")
+  dir.create(render_dir)
+  tmpl_copy <- file.path(render_dir, basename(template_file))
+  file.copy(template_file, tmpl_copy, overwrite = TRUE)
+  on.exit(unlink(render_dir, recursive = TRUE), add = TRUE)
+
+  # Determine output format — use bookdown if available (supports cross-references),
+  # fall back to rmarkdown (renders without cross-refs but doesn't crash)
   output_format <- switch(template_type,
-    "html" = rmarkdown::html_document(),
+    "html" = if (requireNamespace("bookdown", quietly = TRUE)) {
+      bookdown::html_document2(self_contained = TRUE)
+    } else {
+      rmarkdown::html_document(self_contained = TRUE)
+    },
+    "word" = if (requireNamespace("bookdown", quietly = TRUE)) {
+      bookdown::word_document2()
+    } else {
+      rmarkdown::word_document()
+    },
     "pdf" = rmarkdown::pdf_document(),
-    "word" = rmarkdown::word_document(),
-    rmarkdown::html_document()
+    rmarkdown::html_document(self_contained = TRUE)
   )
 
   # Render report
   rmarkdown::render(
-    input = template_file,
+    input = tmpl_copy,
     output_format = output_format,
     output_file = basename(output_file),
     output_dir = dirname(output_file),

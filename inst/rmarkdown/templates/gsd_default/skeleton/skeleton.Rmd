@@ -46,11 +46,6 @@ table_font_size      <- NULL
 ```{r setup, include=FALSE}
 library(appendMCP)
 library(bookdown)
-library(dplyr)
-library(flextable)
-library(forcats)
-library(gMCPLite)
-library(kableExtra)
 library(knitr)
 library(magrittr)
 
@@ -81,8 +76,7 @@ if (is.null(results) && !is.null(config)) {
 
 ## Introduction 
 
-With a `r if(!is.null(config$enroll_rate)) round(config$enroll_rate |> 
-group_by(stratum) |> mutate(d=sum(duration)) |> pull(d) |> max(), time_digits) else "XX"`-month accrual period, 
+With a `r if(!is.null(config$enroll_rate)) round(max(tapply(config$enroll_rate$duration, config$enroll_rate$stratum, sum)), time_digits) else "XX"`-month accrual period, 
 the total sample size planned for the study is `r if(!is.null(config$enroll_rate)) round(sum(config$enroll_rate$duration * config$enroll_rate$rate), n_digits) else "XXX"`.
 
 ## Multiplicity Adjustment
@@ -164,7 +158,7 @@ if (!is.null(results$information_figure)) {
 
 ### Timeline
 
-Figure \@ref(fig:timelinePlot) shows a timeline of the planned analyses and the amount of information available for analyzed endpoints at each such analysis.
+Figure \@ref(fig:timelineType1Plot) shows a timeline of the planned analyses and the amount of information available for analyzed endpoints at each such analysis.
 
 ```{r timelineType1Plot, fig.cap="Anticipated study timeline.", echo=FALSE, fig.align="center", fig.height=5, fig.width=9}
 plot(results$timeline_type1_figure)
@@ -214,35 +208,6 @@ averaged across all analyses, showing expected analysis index and expected calen
 ```{r operatingCharAcrossAnalyses, include=TRUE, echo=FALSE, results='markup'}
 table6b_hux(results$tables$table6b, analysis_digits = analysis_digits,
             time_digits = time_digits, font_size = table_font_size)
-```
-
-<!--
-### Marginal Performance
-
-Table \@ref(tab:marginal) details the marginal (i.e., averaged across the analyses and graphical testing procedure) operating characteristics for each hypothesis (assuming independence between the endpoints).
-The marginal power is shown for each hypothesis, the marginal analysis at which it is rejected (conditional on rejection), and the marginal time (from first patient randomized) at which it is rejected (again conditional on rejection).
--->
-
-```{r marginal, include = TRUE, echo=FALSE, results='markup'}
-# results$marginal_power |>
-#   tidyr::pivot_longer(tidyselect::everything(),
-#                       names_to  = "variable",
-#                       values_to = "value") |>
-#   tidyr::separate(variable, into = c("Metric", "hypothesis"), sep = ": ") |>
-#   tidyr::pivot_wider(names_from = hypothesis, values_from = value) |>
-#   dplyr::mutate(
-#     Metric = c("Marginal power, %", "Marginal rejection analysis",
-#                "Marginal rejection time, mo")
-#   ) ->
-#   temp
-# temp[1, -1] <- round(100*temp[1, -1], 1)
-# temp |>
-#   huxtable::as_hux(add_colnames = TRUE) |>
-#   huxtable::set_bold(row = 1, col = huxtable::everywhere, value = TRUE) |>
-#   huxtable::set_top_border(row = 1, col = huxtable::everywhere, value = 1) |>
-#   huxtable::set_bottom_border(row = 1, col = huxtable::everywhere, value = 1) |>
-#   huxtable::set_bottom_border(row = nrow(temp) + 1, col = huxtable::everywhere, value = 1) |>
-#   huxtable::set_caption("Summary of several marginal operating characteristics.")
 ```
 
 ### Spending Functions

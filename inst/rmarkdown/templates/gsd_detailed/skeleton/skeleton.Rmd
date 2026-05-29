@@ -46,11 +46,6 @@ table_font_size      <- 8
 ```{r setup, include=FALSE}
 library(appendMCP)
 library(bookdown)
-library(dplyr)
-library(flextable)
-library(forcats)
-library(gMCPLite)
-library(kableExtra)
 library(knitr)
 library(magrittr)
 
@@ -93,8 +88,7 @@ In this study, the family-wise type I error rate over all (interim and final) an
 
 # Enrollment {.tabset}
 
-With a `r if(!is.null(config$enroll_rate)) round(config$enroll_rate |> 
-group_by(stratum) |> mutate(d=sum(duration)) |> pull(d) |> max(), time_digits) else "XX"`-month accrual period, 
+With a `r if(!is.null(config$enroll_rate)) round(max(tapply(config$enroll_rate$duration, config$enroll_rate$stratum, sum)), time_digits) else "XX"`-month accrual period, 
 the total sample size planned for the study is `r if(!is.null(config$enroll_rate)) round(sum(config$enroll_rate$duration * config$enroll_rate$rate), n_digits) else "XXX"`.
 
 ## Piece-wise Constant Enrollment Rates

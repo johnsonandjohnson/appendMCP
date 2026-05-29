@@ -32,7 +32,8 @@ dev/
 lintr-reports/
 .amazonq/
 qc/
-.kiro/
+.kiro/*
+!.kiro/skills/
 # Rendered HTML outputs in dev/
 dev/**/*.html
 dev/*.html
