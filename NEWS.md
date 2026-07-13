@@ -1,3 +1,9 @@
+# appendMCP (development version)
+
+## Bug Fixes
+
+- Fixed misalignment of group-sequential rejection boundaries in `update_p_thresholds_cpp`: thresholds are now placed at each hypothesis's `analyses_analysed` columns (matching the observed p-value placement) instead of starting at analysis 1. Previously, any multi-look hypothesis whose first tested analysis was not analysis 1 (e.g. OS tested at analyses 2 & 3) had its interim boundary silently discarded and its interim tested against the final-look boundary, inflating simulated unconditional power (Tables 6a/6b) above the full-alpha local power and over-spending alpha. Design boundaries and local power (Tables 1/4/5) were unaffected.
+
 # appendMCP 0.3.0
 
 ## New Features
