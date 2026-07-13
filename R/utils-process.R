@@ -421,9 +421,9 @@ get_info_tite <- function(control, test, enroll_rate, fail_rate,
                     stratum      = .$stratum)}
   gsDesign2::ahr(
     enroll_rate |>
-      dplyr::group_by(.data$rate, .data$duration) |>
-      dplyr::mutate(rate = sum(.data$arm_rate)) |>
-      dplyr::slice_head(n = 1),
+      dplyr::group_by(.data$stratum, .data$rate, .data$duration, .data$index) |>
+      dplyr::summarise(rate = sum(.data$arm_rate), .groups = "drop") |>
+      dplyr::arrange(.data$index),
     fail_rate_wide,
     times_analysed,
     dplyr::filter(enroll_rate, .data$treatments == test)$ratio[1]/
