@@ -107,7 +107,8 @@ get_boundaries <- function(
                          total_spend = possible_weight*alpha),
       test_lower  = FALSE,
       ratio       = dplyr::filter(enroll_rate, .data$treatments == test)$ratio[1]/
-        dplyr::filter(enroll_rate, .data$treatments == control)$ratio[1]
+        dplyr::filter(enroll_rate, .data$treatments == control)$ratio[1],
+      info_scale  = "h0_info"
     )
   }
 }
