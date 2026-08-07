@@ -25,8 +25,8 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 **appendMCP** generates analysis documentation for graphical multiple
-comparison procedures (MCPs) in group sequential design (GSD) clinical
-trials. Given a study configuration, it produces summary tables,
+comparison procedures (MCPs) in clinical
+trials with group sequential designs (GSDs). Given a study configuration, it produces summary tables,
 diagnostic plots, and a fully formatted R Markdown report suitable for
 appending to a statistical analysis plan (SAP).
 
