@@ -922,6 +922,7 @@ NumericMatrix update_p_thresholds_cpp(DataFrame analyses, DataFrame hypotheses, 
   const IntegerVector hyp_index = hypotheses["index"];
   const NumericVector possible_weight = hypotheses["possible_weight"];
   const List p_thresholds = hypotheses["p_thresholds"];
+  const List analyses_analysed = hypotheses["analyses_analysed"];
   
   for (int j = 0; j < n_hyp; j++) {
     if (weights[j] > 0) {
@@ -940,14 +941,28 @@ NumericMatrix update_p_thresholds_cpp(DataFrame analyses, DataFrame hypotheses, 
         }
       }
       if (best_h >= 0) {
+        // Place each per-look threshold at the analysis it belongs to
+        // (analyses_analysed), mirroring how get_maurer_bretz_z_raw_cpp
+        // places observed p-values.
         const NumericVector p_thr_j = p_thresholds[best_h];
-        const int len = std::min(static_cast<int>(p_thr_j.size()), n_analyses);
-        for (int a = 0; a < len; a++) {
-          p_thr(j, a) = p_thr_j[a];
+        const IntegerVector aa = analyses_analysed[best_h];
+        const int len = std::min(static_cast<int>(p_thr_j.size()),
+                                 static_cast<int>(aa.size()));
+        for (int i = 0; i < len; i++) {
+          const int col = aa[i] - 1; // convert to 0-based analysis column
+          if (col >= 0 && col < n_analyses) {
+            p_thr(j, col) = p_thr_j[i];
+          }
         }
-        if (len > 0) {
-          const double last_val = p_thr_j[len - 1];
-          for (int a = len; a < n_analyses; a++) {
+        // Forward-fill between/after looks: p_obs is forward-filled the same
+        // way, so a hypothesis retested at a later analysis (after weight
+        // propagation) uses its most recent look's boundary. Columns before
+        // the first look stay -1; p_obs is NA there.
+        double last_val = -1.0;
+        for (int a = 0; a < n_analyses; a++) {
+          if (p_thr(j, a) >= 0.0) {
+            last_val = p_thr(j, a);
+          } else if (last_val >= 0.0) {
             p_thr(j, a) = last_val;
           }
         }
