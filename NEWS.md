@@ -1,3 +1,9 @@
+# appendMCP (development version)
+
+## Bug Fixes
+
+- Fixed enrollment-rate pooling in `get_info_tite()` and `get_dist_tite()`: arm-level enrollment is now aggregated within each stratum's enrollment periods (`group_by(stratum, rate, duration, index)`, matching `get_boundaries()`), instead of `group_by(rate, duration)`, which collapsed identical periods across strata. Previously, in multi-stratum designs where strata share period values — e.g. common zero-rate lead-in periods for a sub-study that opens late — all but the first stratum lost those periods and appeared to start enrolling at time 0, inflating expected events/information and therefore simulated power (Tables 6a/6b) for time-to-event hypotheses. The design boundaries and local power (Tables 1/4/5), computed via `get_boundaries()`, were unaffected.
+
 # appendMCP 0.3.0
 
 ## New Features
