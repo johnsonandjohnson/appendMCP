@@ -37,6 +37,13 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="appendmcp-development-version">appendMCP (development version)<a class="anchor" aria-label="anchor" href="#appendmcp-development-version"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>Fixed enrollment-rate pooling in <code>get_info_tite()</code> and <code>get_dist_tite()</code>: arm-level enrollment is now aggregated within each stratum’s enrollment periods (<code>group_by(stratum, rate, duration, index)</code>, matching <code><a href="../reference/get_boundaries.html">get_boundaries()</a></code>), instead of <code>group_by(rate, duration)</code>, which collapsed identical periods across strata. Previously, in multi-stratum designs where strata share period values — e.g. common zero-rate lead-in periods for a sub-study that opens late — all but the first stratum lost those periods and appeared to start enrolling at time 0, inflating expected events/information and therefore simulated power (Tables 6a/6b) for time-to-event hypotheses. The design boundaries and local power (Tables 1/4/5), computed via <code><a href="../reference/get_boundaries.html">get_boundaries()</a></code>, were unaffected.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="appendmcp-030">appendMCP 0.3.0<a class="anchor" aria-label="anchor" href="#appendmcp-030"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-3-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
