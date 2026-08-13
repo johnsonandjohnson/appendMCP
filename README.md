@@ -136,3 +136,4 @@ vignette("configuration-guide", package = "appendMCP")
 - Full documentation site:
   <https://johnsonandjohnson.github.io/appendMCP>
 - Report a bug: <https://github.com/johnsonandjohnson/appendMCP/issues>
+
