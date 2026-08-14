@@ -1,10 +1,11 @@
 # appendMCP
 
-**appendMCP** generates analysis documentation for graphical multiple
-comparison procedures (MCPs) in group sequential design (GSD) clinical
-trials. Given a study configuration, it produces summary tables,
-diagnostic plots, and a fully formatted R Markdown report suitable for
-appending to a statistical analysis plan (SAP).
+**appendMCP** generates analysis documentation for clinical trials
+conducted using graphical multiple comparison procedures (MCPs) within a
+group sequential design (GSD) setting. Given a study configuration, it
+produces summary tables, diagnostic plots, and a fully formatted R
+Markdown report suitable for appending to a statistical analysis plan
+(SAP).
 
 ## Installation
 
@@ -35,17 +36,17 @@ characteristics.
 
 ## What the Package Produces
 
-- **Table 1** — Hypothesis summary (endpoint, type, spending function)
-- **Table 2** — Analysis schedule by hypothesis (timing, information
+- **Table 1:** Hypothesis summary (endpoint, type, spending function)
+- **Table 2:** Analysis schedule by hypothesis (timing, information
   fractions)
-- **Table 3** — Analysis schedule by analysis (all hypotheses at each
+- **Table 3:** Analysis schedule by analysis (all hypotheses at each
   look)
-- **Table 4** — Weight scenarios under the graphical MCP
-- **Table 5** — Boundary specifications (nominal p-values, information
+- **Table 4:** Weight scenarios under the graphical MCP
+- **Table 5:** Boundary specifications (nominal p-values, information
   fractions, local power)
-- **Table 6a / 6b** — Simulation-based operating characteristics by
+- **Table 6a / 6b:** Simulation-based operating characteristics by
   analysis and overall
-- **Plots** — Graph diagram, information fractions, alpha spending,
+- **Plots:** Graph diagram, information fractions, alpha spending,
   enrollment, time-to-event and binary endpoint distributions
 
 Tables are returned as `huxtable` objects ready for Word or HTML output.

@@ -4,20 +4,16 @@
 
 ### Bug Fixes
 
-- Fixed enrollment-rate pooling in `get_info_tite()` and
-  `get_dist_tite()`: arm-level enrollment is now aggregated within each
-  stratum’s enrollment periods
-  (`group_by(stratum, rate, duration, index)`, matching
-  [`get_boundaries()`](../reference/get_boundaries.md)), instead of
-  `group_by(rate, duration)`, which collapsed identical periods across
-  strata. Previously, in multi-stratum designs where strata share period
-  values — e.g. common zero-rate lead-in periods for a sub-study that
-  opens late — all but the first stratum lost those periods and appeared
-  to start enrolling at time 0, inflating expected events/information
-  and therefore simulated power (Tables 6a/6b) for time-to-event
-  hypotheses. The design boundaries and local power (Tables 1/4/5),
-  computed via [`get_boundaries()`](../reference/get_boundaries.md),
-  were unaffected.
+- Fixed misalignment of group-sequential rejection boundaries in
+  `update_p_thresholds_cpp`: thresholds are now placed at each
+  hypothesis’s `analyses_analysed` columns (matching the observed
+  p-value placement) instead of starting at analysis 1. Previously, any
+  multi-look hypothesis whose first tested analysis was not analysis 1
+  (e.g. OS tested at analyses 2 & 3) had its interim boundary silently
+  discarded and its interim tested against the final-look boundary,
+  inflating simulated unconditional power (Tables 6a/6b) above the
+  full-alpha local power and over-spending alpha. Design boundaries and
+  local power (Tables 1/4/5) were unaffected.
 
 ## appendMCP 0.3.0
 
