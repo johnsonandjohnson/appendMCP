@@ -37,3 +37,5 @@ qc/
 # Rendered HTML outputs in dev/
 dev/**/*.html
 dev/*.html
+kiro_readme.Rmd
+kiro_readme.md

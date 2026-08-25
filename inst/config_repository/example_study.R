@@ -16,10 +16,15 @@ example_study_config <- list(
   ),
 
   # Hypothesis specifications
+  # test_method options: "logrank", "stratified_logrank", "unpooled_proportions",
+  #   "pooled_proportions", "cmh", or a WLR family string:
+  #   "cpw(<t_star>)"   -- constant piecewise weight (0 before t_star months, 1 after)
+  #   "fh(<rho>,<gamma>)" -- Fleming-Harrington
+  #   "mb(<tau>,<w_max>)" -- Magirr-Burman
   hypotheses = tibble::tribble(
     ~type,       ~endpoint, ~strata,              ~control, ~test, ~analyses_analysed, ~sf,     ~sfpar, ~nominal, ~test_method,
     "Primary",   "CR",     c("Type_A", "Type_B"), "PBO",    "TRT", 1,                  "none",  NULL,  NULL,      "unpooled_proportions",
-    "Primary",   "OS",     c("Type_A", "Type_B"), "PBO",    "TRT", 1:4,                "asHSD", -1,    0.001,     "logrank",
+    "Primary",   "OS",     c("Type_A", "Type_B"), "PBO",    "TRT", 1:4,                "asHSD", -1,    0.001,     "cpw(6)",
     "Secondary", "EFS",    c("Type_A", "Type_B"), "PBO",    "TRT", 1:4,                "asHSD", -1,    0.001,     "logrank"
   ),
 

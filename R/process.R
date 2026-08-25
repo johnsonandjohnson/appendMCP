@@ -339,7 +339,7 @@ process_hypotheses <- function(hypotheses, analyses, enroll_rate, distribution, 
           if (type == "bin") {
             get_info_bin(con, trt, en, mat, t, piC, piT, method)
           } else {
-            get_info_tite(con, trt, en, di, t)
+            get_info_tite(con, trt, en, di, t, test_method = method)
           }
         }
       ),
@@ -379,6 +379,7 @@ process_hypotheses <- function(hypotheses, analyses, enroll_rate, distribution, 
         list(.data$dist_type, .data$control, .data$test, .data$sf, .data$sfpar, .data$nominal, .data$enroll_rate,
              .data$distribution, .data$possible_weight, .data$control_pooled_rate, .data$test_pooled_rate,
              .data$information_factor, .data$max_information_factor, .data$information_fractions, .data$times_analysed,
+             .data$test_method,
              alpha = alpha),
         get_boundaries
       ),
@@ -431,7 +432,10 @@ process_hypotheses <- function(hypotheses, analyses, enroll_rate, distribution, 
 #' - `sf`: Spending function ("none", "asHSD", "asOF", "asP", "asKD", "asUser")
 #' - `sfpar`: Spending function parameter (e.g., gamma for HSD; NULL if not applicable)
 #' - `nominal`: Nominal alpha spending at interims (optional; NULL for spending function)
-#' - `test_method`: Statistical test ("logrank", "stratified_logrank", "unpooled_proportions", "pooled_proportions", "cmh")
+#' - `test_method`: Statistical test ("logrank", "stratified_logrank", "unpooled_proportions",
+#'   "pooled_proportions", "cmh", or a WLR family string: "cpw(<t_star>)", "fh(<rho>,<gamma>)",
+#'   "mb(<tau>,<w_max>)"). WLR families use a weighted log-rank test for power / boundary
+#'   calculations and simulation. Default for TTE endpoints is "logrank".
 #'
 #' **enroll_rate:** Data frame specifying enrollment assumptions by stratum:
 #' - `stratum`: Patient stratum identifier

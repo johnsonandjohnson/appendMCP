@@ -194,7 +194,7 @@ check_hypotheses_structure <- function(hypotheses) {
   if ("sfpar" %in% names(hypotheses)) check_double_or_null_column(hypotheses, "sfpar")
   if ("nominal" %in% names(hypotheses)) check_positive_double_vector_or_null_column(hypotheses, "nominal")
   if ("test" %in% names(hypotheses)) check_character_column(hypotheses, "test")
-  if ("test_method" %in% names(hypotheses)) check_character_column(hypotheses, "test_method")
+  if ("test_method" %in% names(hypotheses)) check_test_method_column(hypotheses, "test_method")
 }
 
 #' Check enroll_rate data.frame structure
@@ -328,6 +328,35 @@ check_allowed_columns <- function(df, name, allowed_cols) {
 check_character_column <- function(df, col_name) {
   if (!is.character(df[[col_name]])) {
     stop(paste(col_name, "must be character"))
+  }
+}
+
+#' Check test_method column
+#'
+#' Validates that every non-NA value in a \code{test_method} column is either a
+#' plain method name or a correctly-formed parametric WLR string.  Calls
+#' \code{parse_test_method()} on each value so that bad strings (e.g.
+#' \code{"cpw(bad)"}, \code{"unknown(1)"}) produce a clear error at
+#' config-validation time rather than later in processing.
+#'
+#' @param df       Data frame containing the column.
+#' @param col_name Name of the \code{test_method} column.
+check_test_method_column <- function(df, col_name) {
+  col <- df[[col_name]]
+  if (!is.character(col)) {
+    stop(col_name, " must be a character column.")
+  }
+  for (i in seq_along(col)) {
+    val <- col[i]
+    if (!is.na(val)) {
+      tryCatch(
+        parse_test_method(val),
+        error = function(e) {
+          stop("hypotheses row ", i, ": invalid test_method '", val, "': ",
+               conditionMessage(e), call. = FALSE)
+        }
+      )
+    }
   }
 }
 

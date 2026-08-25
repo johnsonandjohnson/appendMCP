@@ -20,6 +20,7 @@ get_boundaries(
   max_information_factor,
   information_fractions,
   times_analysed = NULL,
+  test_method = "logrank",
   alpha = 0.025
 )
 }

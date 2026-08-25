@@ -37,8 +37,32 @@ get_boundaries <- function(
   max_information_factor,
   information_fractions,
   times_analysed = NULL,
-  alpha = 0.025
+  test_method    = "logrank",
+  alpha          = 0.025
 ) {
+  # Dispatch to WLR path when test_method names a WLR family
+  if (dist_type == "tte" && is_wlr_method(test_method)) {
+    spec   <- parse_test_method(test_method)
+    weight <- test_method_to_wlr_weight(spec)
+    return(get_boundaries_wlr(
+      dist_type              = dist_type,
+      control                = control,
+      test                   = test,
+      sf                     = sf,
+      sfpar                  = sfpar,
+      nominal                = nominal,
+      enroll_rate            = enroll_rate,
+      distribution           = distribution,
+      possible_weight        = possible_weight,
+      information_factor     = information_factor,
+      max_information_factor = max_information_factor,
+      information_fractions  = information_fractions,
+      times_analysed         = times_analysed,
+      weight                 = weight,
+      alpha                  = alpha
+    ))
+  }
+
   if (dist_type == "bin") {
     # Use {rpact} for binary outcomes
     n1 <- dplyr::filter(enroll_rate, .data$treatments %in% test) %>%
@@ -407,7 +431,15 @@ get_info_bin <- function(control, test, enroll_rate, maturity_time,
 }
 
 get_info_tite <- function(control, test, enroll_rate, fail_rate,
-                          times_analysed) {
+                          times_analysed, test_method = "logrank") {
+  # Dispatch to WLR information path for cpw / fh / mb families
+  if (is_wlr_method(test_method)) {
+    spec   <- parse_test_method(test_method)
+    weight <- test_method_to_wlr_weight(spec)
+    return(get_info_tite_wlr(control, test, enroll_rate, fail_rate,
+                              times_analysed, weight))
+  }
+
   fail_rate_wide   = tidyr::pivot_wider(fail_rate,
                                         names_from  = "treatment",
                                         values_from = "fail_rate",

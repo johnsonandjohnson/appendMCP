@@ -184,16 +184,29 @@ apply_hypothesis_tests <- function(
     analyses[[col_name]]            <- vector("list", nrow(analyses))
     for (a in seq_len(nrow(analyses))) {
       if (a %in% hyp$analyses_analysed[[1]]) {
-        test_func                   <- test_functions[[hyp$test_method]]
-        if (is.null(test_func)) {
-          stop(paste("Unknown test method:", hyp$test_method))
-        }
+        method <- hyp$test_method
         tryCatch({
-          test_result               <- test_func(df       = analyses$df[[a]],
-                                                 endpoint = hyp$endpoint,
-                                                 strata  = hyp$strata[[1]],
-                                                 control = hyp$control,
-                                                 test = hyp$test)
+          test_result <- if (is_wlr_method(method)) {
+            # WLR family: use the R-level weighted log-rank statistic
+            spec   <- parse_test_method(method)
+            weight <- test_method_to_wlr_weight(spec)
+            test_wlr(df       = analyses$df[[a]],
+                     endpoint = hyp$endpoint,
+                     strata   = hyp$strata[[1]],
+                     control  = hyp$control,
+                     test     = hyp$test,
+                     weight   = weight)
+          } else {
+            test_func <- test_functions[[method]]
+            if (is.null(test_func)) {
+              stop(paste("Unknown test method:", method))
+            }
+            test_func(df       = analyses$df[[a]],
+                      endpoint = hyp$endpoint,
+                      strata   = hyp$strata[[1]],
+                      control  = hyp$control,
+                      test     = hyp$test)
+          }
           analyses[[col_name]][[a]] <- test_result
         }, error = function(e) {
           warning(paste("Error in hypothesis test", h, "analysis", a, ":",
@@ -580,6 +593,10 @@ get_dist <- function(hypotheses) {
         function(type, con, trt, en, di, mat, t, piC, piT, method) {
           if (type == "bin") {
             get_dist_bin(con, trt, en, mat, t, piC, piT, method)
+          } else if (is_wlr_method(method)) {
+            spec   <- parse_test_method(method)
+            weight <- test_method_to_wlr_weight(spec)
+            get_dist_tite_wlr(con, trt, en, di, t, weight)
           } else {
             get_dist_tite(con, trt, en, di, t)
           }
