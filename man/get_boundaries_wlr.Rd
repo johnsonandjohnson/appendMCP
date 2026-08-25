@@ -19,6 +19,7 @@ get_boundaries_wlr(
   information_fractions,
   times_analysed,
   weight,
+  t_star = NULL,
   alpha = 0.025
 )
 }

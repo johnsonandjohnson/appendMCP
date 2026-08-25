@@ -712,7 +712,8 @@ create_summary_tables <- function(analyses, hypotheses, graph, weights, sim_resu
         `Information fraction` = .$information_fractions,
         `Nominal p-value` = .$nominal_p,
         `Exit hurdle` = .$hurdles,
-        `Local power` = .$power
+        `Local power` = .$power,
+        `test_method` = .$test_method
       )
     } |>
     dplyr::mutate(

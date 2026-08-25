@@ -563,6 +563,7 @@ get_boundaries_wlr <- function(dist_type,
                                 information_fractions,
                                 times_analysed,
                                 weight,
+                                t_star = NULL,
                                 alpha = 0.025) {
   # Spending function parameter handling (mirrors get_boundaries logic)
   if (is.null(sfpar) || all(is.na(sfpar))) sfpar <- NULL
@@ -666,8 +667,30 @@ get_boundaries_wlr <- function(dist_type,
       probability  = upper_bounds$probability,
       probability0 = pnorm(-upper_bounds$z),
       z            = upper_bounds$z,
-      # "~hr at bound" is not meaningful for CPW; use NA
-      `~hr at bound` = NA_real_,
+      # Back-calculate post-t_star HR at each boundary if t_star is available.
+      # This is the HR after t_star months that would be required to just cross
+      # the Z boundary, given the design assumptions.
+      `~hr at bound` = if (!is.null(t_star)) {
+        purrr::map2_dbl(
+          upper_bounds$z,
+          seq_along(times_analysed),
+          function(z_b, i) {
+            .cpw_hr_at_bound(
+              z_bound      = z_b,
+              info_total   = info_vec[i],
+              t_star       = t_star,
+              control      = control,
+              test         = test,
+              enroll_rate  = enroll_rate,
+              distribution = distribution,
+              t_analysis   = times_analysed[i],
+              weight       = weight
+            )
+          }
+        )
+      } else {
+        rep(NA_real_, nrow(upper_bounds))
+      },
       `nominal p`  = pnorm(-upper_bounds$z)
     )
 
@@ -714,6 +737,95 @@ get_boundaries_wlr <- function(dist_type,
     ratio         = dplyr::filter(enroll_rate, .data$treatments == test)$ratio[1] /
       dplyr::filter(enroll_rate, .data$treatments == control)$ratio[1],
     info_scale    = "h0_info"
+  )
+}
+
+#' Back-calculate post-t_star HR at a CPW Z boundary
+#'
+#' For a CPW hypothesis, the exit hurdle expressed as a hazard ratio is
+#' not a single overall HR but rather the HR that would need to hold
+#' \emph{after} \code{t_star} in order to just cross the Z boundary.
+#' This function finds that post-\code{t_star} HR via 1-D root-finding:
+#' it varies the test-arm hazard rate only for duration intervals whose
+#' cumulative start time exceeds \code{t_star}, holding the pre-\code{t_star}
+#' intervals fixed (those events receive zero CPW weight so they do not
+#' influence the statistic).
+#'
+#' @param z_bound   Scalar Z boundary value (upper, so positive).
+#' @param info_total Scalar total Fisher information (\eqn{\sigma^2 \times N}).
+#' @param t_star    CPW threshold (months); events at or before this time
+#'                  receive zero weight.
+#' @param control   Character name of the control arm.
+#' @param test      Character name of the test arm.
+#' @param enroll_rate Processed enrollment data frame.
+#' @param distribution Distribution data frame.
+#' @param t_analysis Calendar time of the analysis (for arm construction).
+#' @param weight    Weight argument (from \code{test_method_to_wlr_weight()}).
+#'
+#' @return Scalar HR (between 0 and 1 exclusive for a beneficial treatment).
+#' @keywords internal
+.cpw_hr_at_bound <- function(z_bound, info_total, t_star,
+                              control, test,
+                              enroll_rate, distribution,
+                              t_analysis, weight) {
+  # Identify which duration intervals in the fail_rate table are post-t_star.
+  # We only modify test-arm fail_rates for those intervals.
+  # The cumulative start of interval k is sum(duration[1:(k-1)]).
+  fr_ctrl <- dplyr::filter(distribution,
+                            .data$treatment == control) |>
+    dplyr::arrange(.data$duration)  # assume already sorted within stratum
+  cum_start <- c(0, cumsum(fr_ctrl$duration[-nrow(fr_ctrl)]))
+  post_star_mask <- cum_start >= t_star   # intervals that start at/after t_star
+
+  # Build a modified distribution where test-arm post-t_star fail_rate = h * ctrl
+  modified_distribution <- function(h) {
+    dist_mod <- distribution
+    # For each stratum, scale post-t_star test-arm fail_rates
+    for (st in unique(distribution$stratum)) {
+      fr_ctrl_st <- dplyr::filter(distribution,
+                                   .data$stratum == st,
+                                   .data$treatment == control) |>
+        dplyr::arrange(.data$duration)
+      cum_start_st <- c(0, cumsum(fr_ctrl_st$duration[-nrow(fr_ctrl_st)]))
+      post_mask_st <- cum_start_st >= t_star
+
+      # Rows in dist_mod for this stratum's test arm
+      rows_test <- which(dist_mod$stratum == st & dist_mod$treatment == test)
+      # sort by duration to align with post_mask_st
+      ord <- order(dist_mod$duration[rows_test])
+      rows_test_sorted <- rows_test[ord]
+
+      ctrl_fail <- fr_ctrl_st$fail_rate
+      dist_mod$fail_rate[rows_test_sorted[post_mask_st]] <-
+        h * ctrl_fail[post_mask_st]
+    }
+    dist_mod
+  }
+
+  # Objective: theta(h)*sqrt(info_total) - z_bound = 0
+  # theta(h) = -delta(h) / sigma2(h)  (positive when treatment is beneficial)
+  objective <- function(h) {
+    dist_h <- modified_distribution(h)
+    arms_h <- .build_wlr_arms(control, test, enroll_rate, dist_h, t_analysis)
+    delta_h  <- .gs_delta_wlr_internal(arms_h$arm0, arms_h$arm1,
+                                        tmax   = t_analysis,
+                                        weight = weight,
+                                        approx = "asymptotic")
+    sigma2_h <- .gs_sigma2_wlr_internal(arms_h$arm0, arms_h$arm1,
+                                         tmax   = t_analysis,
+                                         weight = weight,
+                                         approx = "asymptotic")
+    n_total  <- sum(enroll_rate$arm_rate * enroll_rate$duration)
+    theta_h  <- -delta_h / sigma2_h
+    theta_h * sqrt(sigma2_h * n_total) - z_bound
+  }
+
+  # The boundary Z is positive (upper bound), so we need h < 1 (beneficial).
+  # Root-find on h in (0.01, 0.9999) — practically covers all realistic HRs.
+  tryCatch(
+    stats::uniroot(objective, lower = 0.01, upper = 0.9999,
+                   tol = 1e-4)$root,
+    error = function(e) NA_real_
   )
 }
 

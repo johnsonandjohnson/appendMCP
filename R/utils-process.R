@@ -59,6 +59,7 @@ get_boundaries <- function(
       information_fractions  = information_fractions,
       times_analysed         = times_analysed,
       weight                 = weight,
+      t_star                 = if (spec$family == "cpw") spec$params$t_star else NULL,
       alpha                  = alpha
     ))
   }
