@@ -740,9 +740,19 @@ get_dist_tite_wlr <- function(control, test, enroll_rate, fail_rate,
   n_total  <- sum(enroll_rate$arm_rate * enroll_rate$duration)
   info_vec <- sigma2_vec * n_total
 
-  # EZ: standardised drift at each analysis (non-centrality of Z-statistic)
-  # delta * sqrt(N) / sqrt(sigma2) = delta_total / sqrt(info_total)
-  EZ   <- delta_vec * sqrt(n_total) / sqrt(sigma2_vec)
+  # EZ: standardised drift at each analysis (non-centrality of Z-statistic).
+  # Sign convention: EZ > 0 when treatment is beneficial (matching the logrank
+  # path where EZ = -log(AHR)*sqrt(info) > 0 for AHR < 1).
+  #
+  # .gs_delta_wlr_internal returns delta < 0 when treatment reduces hazard
+  # (treatment benefit), because its integrand contains:
+  #   h1(x) - h0(x)  (treatment hazard minus control hazard = negative for benefit)
+  # The analytical boundary path uses theta = -delta/sigma2 > 0 for gs_power_npe.
+  # We apply the same negation here so that EZ = -delta*sqrt(N)/sqrt(sigma2) > 0
+  # when treatment is beneficial.  The simulated p-values are then:
+  #   p = 1 - Phi(Z)   where Z ~ N(EZ, CovZ) > 0 under H1
+  # giving small p-values and correct rejection rates.
+  EZ   <- -delta_vec * sqrt(n_total) / sqrt(sigma2_vec)
   # Covariance matrix via information-fraction formula (same as logrank).
   # covariance() uses ratios sqrt(I_j/I_k), so it is scale-invariant; passing
   # info_vec or sigma2_vec gives the same result.
