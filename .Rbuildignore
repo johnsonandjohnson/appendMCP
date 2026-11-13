@@ -22,3 +22,5 @@
 ^lintr-reports$
 ^README\.html$
 ^qc$
+^kiro_readme\.Rmd$
+^kiro_readme\.md$

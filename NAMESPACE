@@ -59,9 +59,11 @@ export(update_graph)
 export(update_p_thresholds)
 export(validate_config)
 importFrom(Rcpp,sourceCpp)
-importFrom(data.table,":=")
-importFrom(data.table,as.data.table)
-importFrom(data.table,setkey)
+importFrom(data.table,
+  ":=",
+  as.data.table,
+  setkey
+)
 importFrom(graphics,text)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)

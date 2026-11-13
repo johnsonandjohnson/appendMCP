@@ -184,16 +184,29 @@ apply_hypothesis_tests <- function(
     analyses[[col_name]]            <- vector("list", nrow(analyses))
     for (a in seq_len(nrow(analyses))) {
       if (a %in% hyp$analyses_analysed[[1]]) {
-        test_func                   <- test_functions[[hyp$test_method]]
-        if (is.null(test_func)) {
-          stop(paste("Unknown test method:", hyp$test_method))
-        }
+        method <- hyp$test_method
         tryCatch({
-          test_result               <- test_func(df       = analyses$df[[a]],
-                                                 endpoint = hyp$endpoint,
-                                                 strata  = hyp$strata[[1]],
-                                                 control = hyp$control,
-                                                 test = hyp$test)
+          test_result <- if (is_wlr_method(method)) {
+            # WLR family: use the R-level weighted log-rank statistic
+            spec   <- parse_test_method(method)
+            weight <- test_method_to_wlr_weight(spec)
+            test_wlr(df       = analyses$df[[a]],
+                     endpoint = hyp$endpoint,
+                     strata   = hyp$strata[[1]],
+                     control  = hyp$control,
+                     test     = hyp$test,
+                     weight   = weight)
+          } else {
+            test_func <- test_functions[[method]]
+            if (is.null(test_func)) {
+              stop(paste("Unknown test method:", method))
+            }
+            test_func(df       = analyses$df[[a]],
+                      endpoint = hyp$endpoint,
+                      strata   = hyp$strata[[1]],
+                      control  = hyp$control,
+                      test     = hyp$test)
+          }
           analyses[[col_name]][[a]] <- test_result
         }, error = function(e) {
           warning(paste("Error in hypothesis test", h, "analysis", a, ":",
@@ -580,6 +593,10 @@ get_dist <- function(hypotheses) {
         function(type, con, trt, en, di, mat, t, piC, piT, method) {
           if (type == "bin") {
             get_dist_bin(con, trt, en, mat, t, piC, piT, method)
+          } else if (is_wlr_method(method)) {
+            spec   <- parse_test_method(method)
+            weight <- test_method_to_wlr_weight(spec)
+            get_dist_tite_wlr(con, trt, en, di, t, weight)
           } else {
             get_dist_tite(con, trt, en, di, t)
           }
@@ -650,9 +667,41 @@ exec_sims <- function(analyses, hypotheses, graph, method = "z",
       get_mvn() ->
       mvn
 
-    # Expand weight scenarios and compute rejection thresholds
+    # Expand weight scenarios and compute rejection thresholds.
+    # For the spending-function timing we need information on a scale whose
+    # *fractions* match those used when the planned boundaries were computed.
+    #   - logrank / binary: information ~ events (or sample size), proportional
+    #     to Fisher information, so information_factor is a valid proxy.
+    #   - WLR (cpw / fh / mb): Fisher information is the WLR sigma^2, which is
+    #     NOT proportional to event counts.  The planned boundaries in
+    #     get_boundaries_wlr() were built using WLR sigma^2 fractions, so we
+    #     must use the stored `information` column (per-patient sigma^2) here.
+    #     Since get_p_thresholds() only uses ratios, any positive multiple of
+    #     sigma^2 works — we simply keep the stored values.
+    #
+    # IMPORTANT: process_rejection_rules passes BOTH information_factor (as the
+    # planned-info argument) and information (as the obs_info argument) to
+    # get_p_thresholds().  The function computes info_tar = obs_info/max(info),
+    # so both arguments must be on the SAME scale.  For WLR methods, we replace
+    # BOTH information_factor and information with the WLR sigma^2, ensuring
+    # info_tar = sigma2_i / sigma2_max (= correct WLR information fraction).
+    # We capture the original `information` list before any mutation.
+    wlr_sigma2_list <- hypotheses$information   # original per-patient sigma^2 for WLR
     hypotheses |>
-      dplyr::mutate(information = .data$information_factor) |>
+      dplyr::mutate(
+        information = purrr::pmap(
+          list(.data$test_method, wlr_sigma2_list, .data$information_factor),
+          function(method, wlr_info, event_info) {
+            if (is_wlr_method(method)) wlr_info else event_info
+          }
+        ),
+        information_factor = purrr::pmap(
+          list(.data$test_method, wlr_sigma2_list, .data$information_factor),
+          function(method, wlr_info, event_info) {
+            if (is_wlr_method(method)) wlr_info else event_info
+          }
+        )
+      ) |>
       process_rejection_rules(alpha = alpha) ->
       hypotheses
 

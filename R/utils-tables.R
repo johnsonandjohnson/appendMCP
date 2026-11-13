@@ -327,6 +327,16 @@ table4_hux <- function(table4, pval_digits = 5, font_size = NULL) {
 #' @export
 table5_hux <- function(table5, info_fraction_digits = 2, pval_digits = 5,
                        hurdle_digits = 3, prob_digits = 1, font_size = NULL) {
+  # Detect whether any CPW hypotheses are present, and if so, which t_star values
+  has_cpw <- "test_method" %in% names(table5) &&
+    any(grepl("^cpw\\(", table5$test_method, perl = TRUE))
+  cpw_t_stars <- if (has_cpw) {
+    unique(sub("^cpw\\(([^)]+)\\).*", "\\1",
+               grep("^cpw\\(", table5$test_method, value = TRUE, perl = TRUE)))
+  } else {
+    character(0)
+  }
+
   table5 |>
     dplyr::mutate(
       `Information fraction, %` = paste0(
@@ -335,10 +345,16 @@ table5_hux <- function(table5, info_fraction_digits = 2, pval_digits = 5,
       ),
       `Local alpha level`       = sprintf(paste0("%-.", pval_digits,   "f"), .data$`Local alpha level`),
       `Nominal p-value`         = sprintf(paste0("%-.", pval_digits,   "f"), .data$`Nominal p-value`),
-      `Exit hurdle`             = sprintf(paste0("%-.", hurdle_digits, "f"), .data$`Exit hurdle`),
+      # Format hurdle: show value when available, "—" when NA
+      `Exit hurdle`             = dplyr::if_else(
+        is.na(.data$`Exit hurdle`),
+        "\u2014",
+        sprintf(paste0("%-.", hurdle_digits, "f"), .data$`Exit hurdle`)
+      ),
       `Local power`             = paste0(sprintf(paste0("%-.", prob_digits, "f"), .data$`Local power` * 100), "%")
     ) |>
-    dplyr::select(-"Hypothesis", -"Information fraction") |>
+    dplyr::select(-"Hypothesis", -"Information fraction",
+                  -dplyr::any_of("test_method")) |>
     huxtable::as_hux(add_colnames = TRUE) |>
     huxtable::set_bold(row = 1, col = huxtable::everywhere, value = TRUE) |>
     huxtable::set_align(row = huxtable::everywhere, col = c(2, 3, 4, 5, 6), value = "right") |>
@@ -370,6 +386,16 @@ table5_hux <- function(table5, info_fraction_digits = 2, pval_digits = 5,
     }
   }
   temp <- huxtable::set_bottom_border(temp, row = nrow(temp), col = huxtable::everywhere, value = 1)
+  # If CPW hypotheses are present, add a footnote clarifying the exit hurdle interpretation
+  if (has_cpw) {
+    t_star_str <- paste(cpw_t_stars, "months", collapse = " / ")
+    footnote <- paste0(
+      "Exit hurdle for CPW-weighted log-rank hypotheses is the hazard ratio required ",
+      "after the lag period (", t_star_str, ") to cross the Z boundary, ",
+      "based on post-lag events only."
+    )
+    temp <- huxtable::add_footnote(temp, footnote)
+  }
   if (!is.null(font_size)) huxtable::set_font_size(temp, value = font_size) else temp
 }
 

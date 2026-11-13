@@ -20,6 +20,7 @@ get_boundaries(
   max_information_factor,
   information_fractions,
   times_analysed = NULL,
+  test_method = "logrank",
   alpha = 0.025
 )
 }
@@ -53,6 +54,8 @@ get_boundaries(
 \item{information_fractions}{Information fractions across the analyses}
 
 \item{times_analysed}{Analysis times (for time-to-event endpoints)}
+
+\item{test_method}{Test method string (e.g. "logrank", or a WLR family such as "cpw(6)")}
 
 \item{alpha}{Type I error rate}
 }
