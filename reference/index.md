@@ -88,6 +88,8 @@
   : Check required numeric field with bounds
 - [`check_sf_sfpar()`](check_sf_sfpar.md) : Check sf and sfpar
   combination
+- [`check_test_method_column()`](check_test_method_column.md) : Check
+  test_method column
 - [`create_study()`](create_study.md) : Create new study from config and
   template
 - [`create_summary_tables()`](create_summary_tables.md) : Create summary

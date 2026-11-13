@@ -42,13 +42,13 @@ statistical information (sample size or number of events).
 |----|----|----|---:|----|---:|---:|
 | Label | Endpoint | Type | Initial weight | GSD spending fn | Effect size\* | Maximum events / sample size |
 | H1 | CR | Primary | 0.4 | N/A | Delta = 15% | 500 |
-| H2 | OS | Primary | 0.6 | HSD(-1), with a nominal spend of 0.001 at IA1 | HR = 0.69 | 334 |
+| H2 | OS | Primary | 0.6 | HSD(-1), with a nominal spend of 0.001 at IA1 | HR = NA | 334 |
 | H3 | EFS | Secondary | 0 | HSD(-1), with a nominal spend of 0.001 at IA1 | AHR = 0.68 | 413 |
 | \*For a hypothesis corresponding to a time-to-event variable subject to non-proportional hazards, the listed effect size is the average hazard ratio at the final analysis of this hypothesis. |  |  |  |  |  |  |
 
 Trial Design Summary {#tab:table1 .table .huxtable
 quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 The overall type I family-wise error rate for 3 hypotheses, over all
 (interim and final) analyses, is controlled to 2.5% (one-sided).
@@ -146,7 +146,7 @@ rejected) at interim or final analyses.
 
 Summary of interim analyses by hypothesis {#tab:iaDetailsTableA .table
 .huxtable quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Table 3. Summary of Interim Analyses (by calendar analysis)**
 
@@ -169,7 +169,7 @@ style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 Summary of interim analyses by criteria for conduct
 {#tab:iaDetailsTableB .table .huxtable quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Figure 2. Information Factor Over Time by Hypothesis**
 
@@ -209,7 +209,7 @@ trigger**
 
 Summary of alpha allocation by hypothesis {#tab:graphTable .table
 .huxtable quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Table 5. Boundary Specifications**
 
@@ -227,14 +227,14 @@ power at each analysis time.
 | 1 | 0.01000 | 0.01000 | 0.104 | 85.551% | 100.00% |
 | 1 | 0.02500 | 0.02500 | 0.088 | 92.379% | 100.00% |
 | H2: OS |  |  |  |  |  |
-| 1 | 0.01500 | 0.00100 | 0.636 | 29.006% | 55.98% |
-| 2 | 0.01500 | 0.00876 | 0.733 | 67.903% | 70.06% |
-| 3 | 0.01500 | 0.00717 | 0.748 | 78.042% | 85.03% |
-| 4 | 0.01500 | 0.00848 | 0.770 | 86.457% | 100.00% |
-| 1 | 0.02500 | 0.00100 | 0.636 | 29.006% | 55.98% |
-| 2 | 0.02500 | 0.01472 | 0.752 | 74.581% | 70.06% |
-| 3 | 0.02500 | 0.01251 | 0.766 | 83.649% | 85.03% |
-| 4 | 0.02500 | 0.01493 | 0.788 | 90.600% | 100.00% |
+| 1 | 0.01500 | 0.00100 | — | 11.035% | 55.98% |
+| 2 | 0.01500 | 0.00865 | — | 43.408% | 70.06% |
+| 3 | 0.01500 | 0.00590 | — | 58.080% | 85.03% |
+| 4 | 0.01500 | 0.00704 | — | 72.674% | 100.00% |
+| 1 | 0.02500 | 0.00100 | — | 11.035% | 55.98% |
+| 2 | 0.02500 | 0.01465 | — | 51.262% | 70.06% |
+| 3 | 0.02500 | 0.01039 | — | 65.960% | 85.03% |
+| 4 | 0.02500 | 0.01248 | — | 79.355% | 100.00% |
 | H3: EFS |  |  |  |  |  |
 | 1 | 0.01500 | 0.00100 | 0.676 | 47.933% | 60.12% |
 | 2 | 0.01500 | 0.00950 | 0.765 | 84.800% | 74.04% |
@@ -244,67 +244,68 @@ power at each analysis time.
 | 2 | 0.02500 | 0.01593 | 0.782 | 88.990% | 74.04% |
 | 3 | 0.02500 | 0.01314 | 0.792 | 93.805% | 87.70% |
 | 4 | 0.02500 | 0.01468 | 0.807 | 96.704% | 100.00% |
+| Exit hurdle for CPW-weighted log-rank hypotheses is the hazard ratio required after the lag period (6 months) to cross the Z boundary, based on post-lag events only. |  |  |  |  |  |
 
 Operating characteristics {#tab:grSeqTable .table .huxtable
 quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Table 6a. Operating Characteristics at Each Analysis**
 
 |  |  |  |  |
 |---:|----|----|---:|
 | Analysis | Metric | Hypothesis subset | Probability, % |
-| 1 | Power | H1 | 87.500% |
-|  |  | H2 | 29.000% |
-|  |  | H3 | 14.300% |
-|  | Probability of success for at least one Hi | H1, H2 | 90.700% |
-|  |  | H1, H2, H3 | 90.700% |
-|  | Probability of success for all Hi | H1, H2, H3 | 13.300% |
-| 2 | Power | H1 | 89.900% |
-|  |  | H2 | 74.200% |
-|  |  | H3 | 66.300% |
-|  | Probability of success for at least one Hi | H1, H2 | 95.600% |
-|  |  | H1, H2, H3 | 95.600% |
-|  | Probability of success for all Hi | H1, H2, H3 | 62.200% |
-| 3 | Power | H1 | 90.700% |
-|  |  | H2 | 84.200% |
-|  |  | H3 | 78.800% |
+| 1 | Power | H1 | 86.600% |
+|  |  | H2 | 10.100% |
+|  |  | H3 | 4.500% |
+|  | Probability of success for at least one Hi | H1, H2 | 87.500% |
+|  |  | H1, H2, H3 | 87.500% |
+|  | Probability of success for all Hi | H1, H2, H3 | 4.100% |
+| 2 | Power | H1 | 88.700% |
+|  |  | H2 | 53.100% |
+|  |  | H3 | 47.200% |
+|  | Probability of success for at least one Hi | H1, H2 | 92.900% |
+|  |  | H1, H2, H3 | 92.900% |
+|  | Probability of success for all Hi | H1, H2, H3 | 44.300% |
+| 3 | Power | H1 | 89.800% |
+|  |  | H2 | 66.300% |
+|  |  | H3 | 62.300% |
+|  | Probability of success for at least one Hi | H1, H2 | 94.800% |
+|  |  | H1, H2, H3 | 94.800% |
+|  | Probability of success for all Hi | H1, H2, H3 | 58.000% |
+| 4 | Power | H1 | 91.100% |
+|  |  | H2 | 79.900% |
+|  |  | H3 | 76.800% |
 |  | Probability of success for at least one Hi | H1, H2 | 96.900% |
 |  |  | H1, H2, H3 | 96.900% |
-|  | Probability of success for all Hi | H1, H2, H3 | 73.600% |
-| 4 | Power | H1 | 91.900% |
-|  |  | H2 | 91.000% |
-|  |  | H3 | 87.400% |
-|  | Probability of success for at least one Hi | H1, H2 | 98.600% |
-|  |  | H1, H2, H3 | 98.600% |
-|  | Probability of success for all Hi | H1, H2, H3 | 81.200% |
+|  | Probability of success for all Hi | H1, H2, H3 | 71.500% |
 
 Operating characteristics by analysis {#tab:operatingCharByAnalysis
 .table .huxtable quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Table 6b. Operating Characteristics Across Analyses**
 
 |                                             |                   |       |
 |---------------------------------------------|-------------------|------:|
 | Metric                                      | Hypothesis subset | Value |
-| Expected Success Analysis                   | H1                |  1.08 |
-|                                             | H2                |  1.94 |
-|                                             | H3                |  2.18 |
-| Expected Success Analysis (at least one Hi) | H1, H2            |  1.13 |
-|                                             | H1, H2, H3        |  1.13 |
-| Expected Success Analysis (for all Hi)      | H1, H2, H3        |  2.16 |
+| Expected Success Analysis                   | H1                |  1.09 |
+|                                             | H2                |  2.38 |
+|                                             | H3                |  2.52 |
+| Expected Success Analysis (at least one Hi) | H1, H2            |  1.16 |
+|                                             | H1, H2, H3        |  1.16 |
+| Expected Success Analysis (for all Hi)      | H1, H2, H3        |  2.51 |
 | Expected Success Time                       | H1                |  28.5 |
-|                                             | H2                |  33.2 |
-|                                             | H3                |  34.5 |
-| Expected Success Time (at least one Hi)     | H1, H2            |  28.7 |
-|                                             | H1, H2, H3        |  28.7 |
-| Expected Success Time (for all Hi)          | H1, H2, H3        |  34.4 |
+|                                             | H2                |  36.0 |
+|                                             | H3                |  36.8 |
+| Expected Success Time (at least one Hi)     | H1, H2            |  28.9 |
+|                                             | H1, H2, H3        |  28.9 |
+| Expected Success Time (for all Hi)          | H1, H2, H3        |  36.8 |
 
 Operating characteristics across analyses
 {#tab:operatingCharAcrossAnalyses .table .huxtable
 quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Figure 4. Alpha-spending functions**
 
@@ -367,4 +368,4 @@ graphical approaches. *Statistics in Biopharmaceutical Research.*
 
 ------------------------------------------------------------------------
 
-*Report generated on 2026-08-14 11:56:38.595907*
+*Report generated on 2026-11-13 01:29:09.690426*

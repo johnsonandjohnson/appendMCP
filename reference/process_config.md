@@ -44,7 +44,10 @@ process_config(config)
   not applicable) - \`nominal\`: Nominal alpha spending at interims
   (optional; NULL for spending function) - \`test_method\`: Statistical
   test ("logrank", "stratified_logrank", "unpooled_proportions",
-  "pooled_proportions", "cmh")
+  "pooled_proportions", "cmh", or a WLR family string:
+  "cpw(\<t_star\>)", "fh(\<rho\>,\<gamma\>)", "mb(\<tau\>,\<w_max\>)").
+  WLR families use a weighted log-rank test for power / boundary
+  calculations and simulation. Default for TTE endpoints is "logrank".
 
   \*\*enroll_rate:\*\* Data frame specifying enrollment assumptions by
   stratum: - \`stratum\`: Patient stratum identifier - \`treatments\`:

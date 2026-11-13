@@ -145,7 +145,7 @@ functions and maximum statistical information.
 
 Trial Design Summary {#tab:table1 .table .huxtable
 quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 ### Pooled vs Concurrent Control
 
@@ -231,7 +231,7 @@ Three event-driven analyses are planned:
 
 Summary of interim analyses by hypothesis {#tab:iaDetailsTableA .table
 .huxtable quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Table 3. Summary of Interim Analyses (by calendar analysis)**
 
@@ -264,7 +264,7 @@ style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 Summary of interim analyses by criteria for conduct
 {#tab:iaDetailsTableB .table .huxtable quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 ![](platform_study_files/figure-html/informationPlot-1.png)
 
@@ -335,7 +335,7 @@ style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 Summary of alpha allocation by hypothesis {#tab:graphTable .table
 .huxtable quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Table 5. Boundary Specifications**
 
@@ -413,7 +413,7 @@ style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 Operating characteristics {#tab:grSeqTable .table .huxtable
 quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 ## Operating Characteristics
 
@@ -464,7 +464,7 @@ style="width: 100%; margin-left: auto; margin-right: auto;"}
 
 Operating characteristics by analysis {#tab:operatingCharByAnalysis
 .table .huxtable quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 **Table 6b. Operating Characteristics Across Analyses**
 
@@ -499,7 +499,7 @@ style="width: 100%; margin-left: auto; margin-right: auto;"}
 Operating characteristics across analyses
 {#tab:operatingCharAcrossAnalyses .table .huxtable
 quarto-disable-processing="true"
-style="width: 100%; margin-left: auto; margin-right: auto;"}
+style="width: 100%; margin-left: auto; margin-right: auto;   break-inside: avoid; page-break-inside: avoid;"}
 
 ## Distribution Assumptions
 
