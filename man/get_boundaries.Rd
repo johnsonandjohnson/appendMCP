@@ -55,6 +55,8 @@ get_boundaries(
 
 \item{times_analysed}{Analysis times (for time-to-event endpoints)}
 
+\item{test_method}{Test method string (e.g. "logrank", or a WLR family such as "cpw(6)")}
+
 \item{alpha}{Type I error rate}
 }
 \value{

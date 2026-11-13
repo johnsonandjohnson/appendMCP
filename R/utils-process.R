@@ -19,6 +19,7 @@ utils::globalVariables(".")
 #' @param possible_weight Weight in the analysis (from the graphical test)
 #' @param control_pooled_rate Control arm pooled rate (for binary outcomes)
 #' @param test_pooled_rate Test arm pooled rate (for binary outcomes)
+#' @param test_method Test method string (e.g. "logrank", or a WLR family such as "cpw(6)")
 #' @param alpha Type I error rate
 #' @return Boundary specifications object
 get_boundaries <- function(
